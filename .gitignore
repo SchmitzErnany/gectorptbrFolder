@@ -135,4 +135,4 @@ dmypy.json
 *.sh
 
 # data > 100 mb
-preprocessable_files/
+preprocessable_files/wiki-sentences.txt
