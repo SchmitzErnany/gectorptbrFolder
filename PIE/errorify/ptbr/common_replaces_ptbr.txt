@@ -1,0 +1,4 @@
+cumprimento	comprimento	98
+cumprimento	comprimentos	23
+mandado	mandato	87
+mandato	mandado	89
