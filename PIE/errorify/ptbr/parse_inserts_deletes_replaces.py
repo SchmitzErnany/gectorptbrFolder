@@ -5,7 +5,7 @@ def simpleFileToDict(filename):
     with open(filename) as file:
         for line in file:
             key, value = line.split()
-            to_be_dumped[key] = value
+            to_be_dumped[key] = int(value)
     return to_be_dumped
 
 def complexFileToDict(filename):
@@ -17,7 +17,7 @@ def complexFileToDict(filename):
         file.seek(0) # return the cursor to the first line of the file
         for line in file:
             key, value, number = line.split()
-            to_be_dumped[key][value] = number
+            to_be_dumped[key][value] = int(number)
     return to_be_dumped
 
 

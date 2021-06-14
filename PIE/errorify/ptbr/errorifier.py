@@ -5,12 +5,25 @@ import random
 from numpy.random import choice as npchoice
 
 VERBS = pickle.load(open('verbs.p', 'rb'))
-# COMMON_INSERTS = set(pickle.load(open('common_inserts_ptbr.p', 'rb')))
-# COMMON_REPLACES = pickle.load(open('common_replaces_ptbr.p', 'rb'))
-# COMMON_DELETES = pickle.load(open('common_deletes_ptbr.p','rb'))
-COMMON_INSERTS = False
-COMMON_REPLACES = False
-COMMON_DELETES = False
+try:
+	COMMON_INSERTS = set(pickle.load(open('common_inserts_ptbr.p', 'rb')))
+except:
+	COMMON_INSERTS = False
+try:
+	COMMON_REPLACES = pickle.load(open('common_replaces_ptbr.p', 'rb'))
+except:
+	COMMON_REPLACES = False
+try:
+	COMMON_DELETES = pickle.load(open('common_deletes_ptbr.p','rb'))
+except:
+	COMMON_DELETES = False
+
+
+
+
+
+
+
 
 class Errorifier:
     """Generate errors in good sentences!"""

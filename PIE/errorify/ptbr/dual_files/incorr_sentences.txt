@@ -1,20 +1,65 @@
 Eles ser feios.
 Eles era feios.
 Eles eram feios.
-Eles eram feios.
-Eles era feios.
 Eles ser feios.
 Eles era feios.
+Eles era feios.
+Eles ser feios.
+Eles -DELETE- eram feios.
+Eles eram feios.
+-DELETE- Eles -DELETE- ser feios.
+Eles eram -DELETE- feios.
+Eles ser feios.
+Eles era feios.
+Eles -DELETE- -DELETE- era feios.
 Eles eram feios.
 Eles ser feios.
-Eles eram feios.
-Eles eras feios.
-Eles eram feios.
-Eles eram feios.
-Eles ser feios.
-Eles eram feios.
-Eles eram feios.
+Eles eram -DELETE- feios.
+-DELETE- Eles ser feios.
 Eles eram feios.
 Eles era feios.
-Eles eram feios.
-Eles era feios.
+-REPLACE_2- ffffff.
+-DELETE- -REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-DELETE- -REPLACE_2- -DELETE- ffffff.
+-REPLACE_1- -DELETE- -DELETE- ffffff.
+-DELETE- -REPLACE_2- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-REPLACE_1- -DELETE- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-REPLACE_2- -DELETE- -DELETE- ffffff.
+-DELETE- -REPLACE_2- ffffff.
+-REPLACE_2- -DELETE- -DELETE- ffffff.
+
+-REPLACE_2- -DELETE- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-DELETE- -REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-DELETE- -REPLACE_2- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+
+
+-INSERT- dadsad asd asds.
+-DELETE- dadsad asd asds.
+-DELETE- -INSERT- -DELETE- dadsad asd asds.
+dadsad -DELETE- asd asds.
+dadsad asd asds.
+-INSERT- dadsad asd asds.
+dadsad asd asds.
+-INSERT- dadsad asd -DELETE- asds.
+-DELETE- dadsad asd asds.
+-INSERT- -DELETE- dadsad asd asds.
+dadsad asd asds.
+-DELETE- dadsad asd asds.
+-DELETE- dadsad asd asds.
+-INSERT- dadsad asd asds.

@@ -1,4 +1,3 @@
-cumprimento	comprimento	98
-cumprimento	comprimentos	23
-mandado	mandato	87
-mandato	mandado	89
+-REPLACE_1-	-REPLACE_2-	33000
+cumprimento	comprimento	33000
+cumprimento	comprimentos	33000
