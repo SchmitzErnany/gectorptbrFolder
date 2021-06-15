@@ -107,6 +107,9 @@ def main(args):
     train_data = reader.read(args.train_set)
     dev_data = reader.read(args.dev_set)
 
+    train_num_batches = reader.number_of_lines(args.train_set, args.batch_size)  # introduced by hand by ERS
+    dev_num_batches = reader.number_of_lines(args.dev_set, args.batch_size)  # introduced by hand by ERS
+
     default_tokens = [DEFAULT_OOV_TOKEN, DEFAULT_PADDING_TOKEN]
     namespaces = ['labels', 'd_tags']
     tokens_to_add = {x: default_tokens for x in namespaces}
@@ -171,7 +174,9 @@ def main(args):
                       cold_step_count=args.cold_steps_count,
                       cold_lr=args.cold_lr,
                       cuda_verbose_step=int(args.cuda_verbose_steps)
-                      if args.cuda_verbose_steps else None
+                      if args.cuda_verbose_steps else None,
+                      train_num_batches = train_num_batches,
+                      dev_num_batches = dev_num_batches,
                       )
     print("Start training")
     trainer.train()

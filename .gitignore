@@ -136,3 +136,4 @@ dmypy.json
 
 # data > 100 mb
 preprocessable_files/wiki-sentences.txt
+MODEL_DIR/

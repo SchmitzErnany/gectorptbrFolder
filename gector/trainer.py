@@ -64,6 +64,8 @@ class Trainer(TrainerBase):
         cold_step_count: int = 0,
         cold_lr: float = 1e-3,
         cuda_verbose_step=None,
+        train_num_batches: int = 48,
+        dev_num_batches: int = 12,
     ) -> None:
         """
         A trainer for doing supervised learning. It just takes a labeled dataset
@@ -193,6 +195,8 @@ class Trainer(TrainerBase):
         self.cold_step_count = cold_step_count
         self.cold_lr = cold_lr
         self.cuda_verbose_step = cuda_verbose_step
+        self.train_num_batches = train_num_batches
+        self.dev_num_batches = dev_num_batches
 
         if patience is None:  # no early stopping
             if validation_dataset:
@@ -324,7 +328,7 @@ class Trainer(TrainerBase):
         histogram_parameters = set(self.model.get_parameters_for_histogram_tensorboard_logging())
 
         logger.info("Training")
-        train_generator_tqdm = Tqdm.tqdm(train_generator, total=num_training_batches)
+        train_generator_tqdm = Tqdm.tqdm(train_generator, total=self.train_num_batches)
         cumulative_batch_size = 0
         self.optimizer.zero_grad()
         for batch_group in train_generator_tqdm:
@@ -481,7 +485,7 @@ class Trainer(TrainerBase):
         num_validation_batches = math.ceil(
             val_iterator.get_num_batches(self._validation_data) / num_gpus
         )
-        val_generator_tqdm = Tqdm.tqdm(val_generator, total=num_validation_batches)
+        val_generator_tqdm = Tqdm.tqdm(val_generator, total=self.dev_num_batches)
         batches_this_epoch = 0
         val_loss = 0
         for batch_group in val_generator_tqdm:

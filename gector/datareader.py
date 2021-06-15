@@ -97,6 +97,15 @@ class Seq2LabelsDatasetReader(DatasetReader):
                 if instance:
                     yield instance
 
+
+    def number_of_lines(self, file_path, batch_size):
+        # if `file_path` is a URL, redirect to the cache
+        with open(file_path, "r") as data_file:
+            num_lines = 0
+            for line in data_file:
+                num_lines += 1
+        return num_lines//batch_size + 1
+
     def extract_tags(self, tags: List[str]):
         op_del = self._delimeters['operations']
 
