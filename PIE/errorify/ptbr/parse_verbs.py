@@ -42,7 +42,7 @@ with open(verbs_file,"r") as ip_file:
 
 
 result = expand_dict(words)
-pickle.dump(result,open("verbs.p","wb"))
+pickle.dump(result,open("common_VerbNoun_ptbr.p","wb"))
 
 
 #%%
