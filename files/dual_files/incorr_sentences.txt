@@ -1,6 +1,6 @@
-Eles seriar -DELETE- feio.
--DELETE- Eles serem -DELETE- feios.
--DELETE- Eles iriam feios.
+Eles seriar -DELETE- feio demais.
+-DELETE- Eles serem -DELETE- feios demais.
+-DELETE- Eles estudas feios.
 Eles eram feios.
 -DELETE- Eles fora feios.
 Eles eram feios.
