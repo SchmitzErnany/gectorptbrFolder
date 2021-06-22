@@ -4,7 +4,7 @@ import pickle
 import random
 from numpy.random import choice as npchoice
 
-VERBS = pickle.load(open('verbs.p', 'rb'))
+VERBS = pickle.load(open('common_VerbNoun_ptbr.p', 'rb'))
 try:
 	COMMON_INSERTS = set(pickle.load(open('common_inserts_ptbr.p', 'rb')))
 except:
