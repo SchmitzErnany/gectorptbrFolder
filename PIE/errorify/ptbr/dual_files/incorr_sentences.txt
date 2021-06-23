@@ -1,65 +1,65 @@
+Eles era -DELETE- feios.
+Eles era feios.
+Eles -DELETE- -DELETE- era -DELETE- feios.
 Eles eram feios.
+Eles eras feios.
+Eles eras feios.
+Eles -DELETE- eram feios.
 Eles eram feios.
-Eles será feios.
--DELETE- Eles seria feios.
-Eles fora feios.
-Eles seria -DELETE- -DELETE- feios.
-Eles será -DELETE- feios.
-Eles é -DELETE- -DELETE- feios.
+Eles eram -DELETE- feios.
+Eles -DELETE- -DELETE- eram feios.
+-DELETE- Eles eras feios.
+Eles eram feios.
+Eles -DELETE- eras -DELETE- feios.
+-DELETE- Eles eras feios.
 Eles -DELETE- era feios.
-Eles será -DELETE- -DELETE- feios.
-Eles fora feios.
-Eles eram feios.
-Eles era feios.
-Eles será feios.
-Eles -DELETE- eram -DELETE- feios.
-Eles -DELETE- é feios.
--DELETE- Eles será -DELETE- feios.
-Eles era feios.
 Eles era feios.
 -DELETE- Eles era feios.
--REPLACE_2- -DELETE- ffffff.
+Eles era feios.
+Eles eram feios.
+Eles era feios.
+-REPLACE_2- ffffff.
+-DELETE- -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
--DELETE- -REPLACE_1- ffffff.
--DELETE- -REPLACE_1- ffffff.
+-REPLACE_2- ffffff.
 -REPLACE_1- ffffff.
 -REPLACE_2- ffffff.
+-DELETE- -REPLACE_2- -DELETE- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_1- ffffff.
+-REPLACE_1- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-DELETE- -REPLACE_2- ffffff.
+-DELETE- -REPLACE_2- ffffff.
 -DELETE- -DELETE- -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
--REPLACE_2- ffffff.
--REPLACE_2- ffffff.
--REPLACE_2- ffffff.
--DELETE- -REPLACE_1- -DELETE- ffffff.
--DELETE- -REPLACE_1- ffffff.
-
--REPLACE_2- ffffff.
--REPLACE_2- ffffff.
--REPLACE_2- ffffff.
--REPLACE_2- ffffff.
--REPLACE_2- ffffff.
--DELETE- -REPLACE_2- -DELETE- ffffff.
--DELETE- -REPLACE_2- ffffff.
--REPLACE_2- ffffff.
 -REPLACE_2- -DELETE- ffffff.
--REPLACE_2- ffffff.
 -REPLACE_2- -DELETE- ffffff.
--REPLACE_2- ffffff.
 -DELETE- -REPLACE_2- ffffff.
--REPLACE_2- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-DELETE- -REPLACE_2- ffffff.
+-REPLACE_2- -DELETE- ffffff.
+-DELETE- -REPLACE_2- ffffff.
 
 
-dadsad asd asds.
-dadsad asd asds.
-dadsad asd -DELETE- asds.
-dadsad asd asds.
--DELETE- dadsad asd asds.
 dadsad -DELETE- asd asds.
--INSERT- -DELETE- -DELETE- dadsad asd asds.
 dadsad asd asds.
 -INSERT- dadsad asd asds.
 -DELETE- dadsad asd asds.
+dadsad asd asds.
+dadsad asd asds.
 -INSERT- dadsad asd asds.
--INSERT- -DELETE- dadsad asd -DELETE- asds.
 -INSERT- dadsad asd asds.
+dadsad asd asds.
+dadsad asd asds.
+dadsad -DELETE- asd asds.
+dadsad asd asds.
+dadsad -DELETE- asd asds.
 dadsad asd asds.

@@ -64,7 +64,7 @@ class Errorifier:
 
 
     def verb_error(self, redir=True):
-        """Introduce a verb error from morphs.txt."""
+        """Introduce a verb error from common_VerbNoun_ptbr.txt."""
 
         if VERBS == False:
             return ' '.join(self.tokenized)
