@@ -1,3 +1,0 @@
--REPLACE_1-	-REPLACE_2-	33000
-cumprimento	comprimento	33000
-cumprimento	comprimentos	33000

@@ -1,65 +1,65 @@
-Eles era -DELETE- feios.
-Eles era feios.
-Eles -DELETE- -DELETE- era -DELETE- feios.
-Eles eram feios.
-Eles eras feios.
-Eles eras feios.
-Eles -DELETE- eram feios.
-Eles eram feios.
-Eles eram -DELETE- feios.
-Eles -DELETE- -DELETE- eram feios.
--DELETE- Eles eras feios.
-Eles eram feios.
-Eles -DELETE- eras -DELETE- feios.
--DELETE- Eles eras feios.
-Eles -DELETE- era feios.
-Eles era feios.
--DELETE- Eles era feios.
-Eles era feios.
-Eles eram feios.
-Eles era feios.
+1 - Eles eram feios, mas não conseguiram forem embora.
+2 - Eles eram feios.
+3 - -DELETE- Eles eram feios.
+4 - Eles eram feios.
+5 - Eles era feios.
+6 - Eles eram feios.
+7 -DELETE- - Eles eram feios.
+8 - Eles eram feios.
+9 - Eles eram feios.
+10 - Eles eram feios.
+11 - Eles eram feios.
+12 - Eles era feios.
+13 - Eles era feios.
+14 - Eles era feios.
+15 - Eles -DELETE- eram feios.
+16 - Eles eram feios.
+17 - Eles eram feios.
+18 - Eles eram feios.
+19 - Eles eram feios.
+20 - Eles eram feios.
 -REPLACE_2- ffffff.
--DELETE- -REPLACE_2- ffffff.
--REPLACE_2- ffffff.
+-REPLACE_1- ffffff.
+-REPLACE_1- ffffff.
 -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
 -REPLACE_1- ffffff.
 -REPLACE_2- ffffff.
--DELETE- -REPLACE_2- -DELETE- ffffff.
--REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
 -REPLACE_1- ffffff.
 -REPLACE_1- ffffff.
+-REPLACE_1- ffffff.
+-DELETE- -REPLACE_1- ffffff.
 -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
 
 -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
--DELETE- -REPLACE_2- ffffff.
--DELETE- -REPLACE_2- ffffff.
--DELETE- -DELETE- -REPLACE_2- ffffff.
 -REPLACE_2- ffffff.
--REPLACE_2- -DELETE- ffffff.
--REPLACE_2- -DELETE- ffffff.
--DELETE- -REPLACE_2- ffffff.
--REPLACE_2- -DELETE- ffffff.
--DELETE- -REPLACE_2- ffffff.
--REPLACE_2- -DELETE- ffffff.
--DELETE- -REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
+-REPLACE_2- ffffff.
 
 
-dadsad -DELETE- asd asds.
-dadsad asd asds.
--INSERT- dadsad asd asds.
--DELETE- dadsad asd asds.
-dadsad asd asds.
-dadsad asd asds.
 -INSERT- dadsad asd asds.
 -INSERT- dadsad asd asds.
 dadsad asd asds.
+-INSERT- dadsad asd asds.
+-INSERT- dadsad asd asds.
+-INSERT- dadsad asd asds.
 dadsad asd asds.
-dadsad -DELETE- asd asds.
+-INSERT- -DELETE- dadsad asd asds.
+-INSERT- dadsad asd asds.
+-INSERT- dadsad asd asds.
+-INSERT- dadsad asd asds.
 dadsad asd asds.
-dadsad -DELETE- asd asds.
-dadsad asd asds.
+-INSERT- dadsad asd asds.
+-INSERT- dadsad asd asds.

@@ -64,8 +64,8 @@ class Errorifier:
 
 
     def verb_error(self, redir=True):
-        """Introduce a verb error from common_VerbNoun_ptbr.txt."""
-
+        """Introduce a verb error from common_VerbNoun_ptbr.p."""
+        # sentence_original = self.tokenized[:]
         if VERBS == False:
             return ' '.join(self.tokenized)
 
@@ -82,6 +82,8 @@ class Errorifier:
                 return self.sentence
             repl = random.choice(VERBS[word])
             self.tokenized[index] = repl
+
+            # print(sentence_original, self.tokenized, word, repl)
 
         return ' '.join(self.tokenized)
 
@@ -130,8 +132,21 @@ class Errorifier:
     def error(self):
         """Introduce a random error."""
 
+        if len(self.tokenized) <= 5:
+            num_repls = 1
+            probs = [0.4,0.6]
+        elif 5 < len(self.tokenized) <= 12:
+            num_repls = 2
+            probs = [0.15,0.25,0.6]
+        elif 12 < len(self.tokenized) <= 20:
+            num_repls = 3
+            probs = [0.1,0.15,0.3,0.45]
+        else:
+            num_repls = 4
+            probs = [0.05,0.07,0.25,0.35,0.28]
+
         #count = math.floor(pow(random.randint(1, 11), 2) / 50) + 1
-        count = npchoice([0,1,2,3,4],p=[0.05,0.07,0.25,0.35,0.28]) #original (a1)
+        count = npchoice([i for i in range(num_repls + 1)],p=probs) #original (a1)
         #count = npchoice([0,1,2,3,4],p=[0.1,0.1,0.2,0.3,0.3]) # (a2)
         #count = npchoice([0,1,2,3,4,5],p=[0.1,0.1,0.2,0.2,0.2,0.2]) # (a3)
         #count = npchoice([0,1,2,3,4,5],p=[0.1,0.1,0.2,0.2,0.2,0.2]) # (a4)
