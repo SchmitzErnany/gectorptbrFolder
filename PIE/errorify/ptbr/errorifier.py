@@ -5,21 +5,18 @@ import random
 from numpy.random import choice as npchoice
 
 VERBS = pickle.load(open('common_VerbNoun_ptbr.p', 'rb'))
-try:
-	COMMON_INSERTS = set(pickle.load(open('common_inserts_ptbr.p', 'rb')))
-except:
+
+COMMON_INSERTS = set(pickle.load(open('common_inserts_ptbr.p', 'rb')))
+if COMMON_INSERTS == set():
 	COMMON_INSERTS = False
-try:
-	COMMON_REPLACES = pickle.load(open('common_replaces_ptbr.p', 'rb'))
-except:
+
+COMMON_REPLACES = pickle.load(open('common_replaces_ptbr.p', 'rb'))
+if COMMON_REPLACES == {}:
 	COMMON_REPLACES = False
-try:
-	COMMON_DELETES = pickle.load(open('common_deletes_ptbr.p','rb'))
-except:
+
+COMMON_DELETES = pickle.load(open('common_deletes_ptbr.p','rb'))
+if COMMON_DELETES == {}:
 	COMMON_DELETES = False
-
-
-
 
 
 
