@@ -23,7 +23,7 @@ for i, lemma in enumerate(NOUNADJ_lemma_values):
         print(i)
     lemma_array = nounAdj_df.loc[lemma].values
     nounAdj_full_listOfArrays.append(lemma_array)
-#pickle.dump(nounAdj_full_listOfArrays, open("pickle/nounAdj_relations.p","wb"))
+pickle.dump(nounAdj_full_listOfArrays, open("pickle/nounAdj_relations.p","wb"))
 #%%
 
 Verb_full_listOfArrays = []
@@ -34,7 +34,7 @@ for key in verb_df_dict.keys():
             print(i)
         lemma_array = verb_df_dict[key].loc[lemma].values
         Verb_full_listOfArrays.append(lemma_array)
-#pickle.dump(Verb_full_listOfArrays, open("pickle/verb_relations.p","wb"))
+pickle.dump(Verb_full_listOfArrays, open("pickle/verb_relations.p","wb"))
 
 prepArt_full_listOfArrays = []
 PREPART_lemma_values = prepArt_df.index
