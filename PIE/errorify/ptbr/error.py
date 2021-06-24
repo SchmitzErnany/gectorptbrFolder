@@ -68,11 +68,11 @@ def errorify_file(filename: str):
     # Errorify each line
     file = open(filename, 'r')
 
-    print('The batch size is ' + str(BATCH_SIZE) + ' file lines')
+    print('The batch size is ' + str(BATCH_SIZE) + ' sentences')
 
     batches = [(l, pairs) for l in readn(file, BATCH_SIZE)]
-    [pool.imap(errorify, batch) for batch in tqdm(batches)]
-    # [x for x in tqdm(pool.imap(errorify, batches))] # this line was the previous display which would not show the progress bar.
+    # [pool.imap(errorify, batch) for batch in tqdm(batches)]
+    [x for x in pool.imap(errorify, tqdm(batches))] # this line was the previous display which would not show the progress bar.
     pool.close()
 
     # Flush anything remaining
