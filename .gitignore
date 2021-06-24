@@ -137,3 +137,7 @@ dmypy.json
 # data > 100 mb
 preprocessable_files/wiki-sentences.txt
 MODEL_DIR/
+PIE/errorify/ptbr/dual_files/corr_sentences.txt
+PIE/errorify/ptbr/dual_files/incorr_sentences.txt
+files/dual_files/corr_sentences.txt
+files/dual_files/incorr_sentences.txt
