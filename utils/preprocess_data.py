@@ -328,9 +328,9 @@ def add_labels_to_the_tokens(source_tokens, labels, delimeters=SEQ_DELIMETERS):
 def convert_data_from_raw_files(source_file, target_file, output_file, chunk_size):
     tagged = []
     source_data, target_data = read_parallel_lines(source_file, target_file)
-    print(f"The size of raw dataset is {len(source_data)}")
+    print(f"The size of raw dataset is {len(source_data)} file lines")
     cnt_total, cnt_all, cnt_tp = 0, 0, 0
-    for source_sent, target_sent in tqdm(zip(source_data, target_data)):
+    for source_sent, target_sent in tqdm(zip(source_data, target_data), total = len(source_data)):
         try:
             aligned_sent = align_sequences(source_sent, target_sent)
         except Exception:

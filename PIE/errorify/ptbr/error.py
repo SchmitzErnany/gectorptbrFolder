@@ -11,7 +11,7 @@ FLUSH_SIZE = 100000
 BATCH_SIZE = 200
 
 def flush_queue(pairs, flush=False):
-    """Write queue obects to file."""
+    """Write queue objects to file."""
 
     wrote = 0
     with FileLock('%s.lock' % CORRECT_FILE), FileLock('%s.lock' % ERRORED_FILE):
@@ -65,9 +65,14 @@ def errorify_file(filename: str):
     manager = mp.Manager()
     pairs = manager.Queue()
 
-    # Erroriy each line
+    # Errorify each line
     file = open(filename, 'r')
-    [x for x in tqdm(pool.imap(errorify, [(l, pairs) for l in readn(file, BATCH_SIZE)]))]
+
+    print('The batch size is ' + str(BATCH_SIZE) + ' file lines')
+
+    batches = [(l, pairs) for l in readn(file, BATCH_SIZE)]
+    [pool.imap(errorify, batch) for batch in tqdm(batches)]
+    # [x for x in tqdm(pool.imap(errorify, batches))] # this line was the previous display which would not show the progress bar.
     pool.close()
 
     # Flush anything remaining
