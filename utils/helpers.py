@@ -138,7 +138,7 @@ def apply_reverse_transformation(source_token, transform):
 def read_parallel_lines(fn1, fn2):
     lines1 = read_lines(fn1, skip_strip=True)
     lines2 = read_lines(fn2, skip_strip=True)
-    assert len(lines1) == len(lines2)
+    assert len(lines1) == len(lines2), "the number of lines of the first file does not match the second's. Make sure that both paths exist."
     out_lines1, out_lines2 = [], []
     for line1, line2 in zip(lines1, lines2):
         if not line1.strip() or not line2.strip():
