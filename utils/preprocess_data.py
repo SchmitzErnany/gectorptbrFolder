@@ -364,7 +364,7 @@ def convert_data_from_raw_files(source_file, target_file, output_file, chunk_siz
           f"Original TP {cnt_tp}."
           f" Original TN {cnt_all - cnt_tp}")
     if tagged:
-        write_lines(output_file, tagged, 'a')
+        write_lines(output_file, tagged, 'w')
 
 
 def convert_labels_into_edits(labels):
