@@ -113,6 +113,7 @@ fulldic = mergeDicts(VnounAdjdic, prepArtdic)
 #%% dumping all relations
 
 pickle.dump(fulldic, open("common_VerbNoun_ptbr.p","wb"))
+pickle.dump(Vdic, open("common_Verb_ptbr.p","wb"))
 
 
 #%%
@@ -171,27 +172,27 @@ for i, prepArt in enumerate(prepArt_pickle):
 #%% joining and dumping the verb-form-vocab.txt
 
 verb_form_vocab_list = []
-# nouns and adjs
-for i, (word, tag) in enumerate(nounAdjdetaildic.keys()):
-    value = nounAdjdetaildic[(word, tag)]
-    value_shape_0 = value.shape[0]
-    for word_tag in nounAdjdetaildic[(word, tag)]:
-        words_tags_str = word + '_' + word_tag[0] + ':' + tag[:4] + '_' + word_tag[1][:4]
-        verb_form_vocab_list.append(words_tags_str)
-# prepositions and articles
-for i, (word, tag) in enumerate(prepArtdetaildic.keys()):
-    value = prepArtdetaildic[(word, tag)]
-    value_shape_0 = value.shape[0]
-    for word_tag in prepArtdetaildic[(word, tag)]:
-        if 'S8D' in tag:
-            first_tag = tag[:3]+tag[5:7]
-            second_tag = word_tag[1][:3]+word_tag[1][5:7]
-        else:
-            first_tag = tag[:1]+tag[3:5]
-            second_tag = word_tag[1][:1]+word_tag[1][3:5]
-            
-        words_tags_str = word + '_' + word_tag[0] + ':' + first_tag + '_' + second_tag
-        verb_form_vocab_list.append(words_tags_str)
+### nouns and adjs
+#for i, (word, tag) in enumerate(nounAdjdetaildic.keys()):
+#    value = nounAdjdetaildic[(word, tag)]
+#    value_shape_0 = value.shape[0]
+#    for word_tag in nounAdjdetaildic[(word, tag)]:
+#        words_tags_str = word + '_' + word_tag[0] + ':' + tag[:4] + '_' + word_tag[1][:4]
+#        verb_form_vocab_list.append(words_tags_str)
+### prepositions and articles
+#for i, (word, tag) in enumerate(prepArtdetaildic.keys()):
+#    value = prepArtdetaildic[(word, tag)]
+#    value_shape_0 = value.shape[0]
+#    for word_tag in prepArtdetaildic[(word, tag)]:
+#        if 'S8D' in tag:
+#            first_tag = tag[:3]+tag[5:7]
+#            second_tag = word_tag[1][:3]+word_tag[1][5:7]
+#        else:
+#            first_tag = tag[:1]+tag[3:5]
+#            second_tag = word_tag[1][:1]+word_tag[1][3:5]
+#            
+#        words_tags_str = word + '_' + word_tag[0] + ':' + first_tag + '_' + second_tag
+#        verb_form_vocab_list.append(words_tags_str)
 # verbs
 for i, (word, tag) in enumerate(Vdetaildic.keys()):
     value = Vdetaildic[(word, tag)]
