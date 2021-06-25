@@ -357,14 +357,14 @@ def convert_data_from_raw_files(source_file, target_file, output_file, chunk_siz
             cnt_total += len(alignments)
             tagged.extend(alignments)
         if len(tagged) > chunk_size:
-            write_lines(output_file, tagged, mode='a')
+            write_lines(output_file, tagged, mode='w')
             tagged = []
 
     print(f"Overall extracted {cnt_total}. "
           f"Original TP {cnt_tp}."
           f" Original TN {cnt_all - cnt_tp}")
     if tagged:
-        write_lines(output_file, tagged, 'w')
+        write_lines(output_file, tagged, mode='w')
 
 
 def convert_labels_into_edits(labels):
