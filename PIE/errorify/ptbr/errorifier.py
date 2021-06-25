@@ -81,7 +81,7 @@ class Errorifier:
                 if not VERBS[word]:
                     continue
                 repl = random.choice(VERBS[word])
-                print(word, verbs, VERBS[word], repl)
+                #print(word, verbs, VERBS[word], repl)
                 self.tokenized[index] = repl
 
             # index = random.choice(verbs)
