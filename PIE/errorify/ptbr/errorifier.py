@@ -131,16 +131,16 @@ class Errorifier:
 
         if len(self.tokenized) <= 5:
             num_repls = 1
-            probs = [0.4,0.6]
+            probs = [0.2,0.8]
         elif 5 < len(self.tokenized) <= 12:
             num_repls = 2
-            probs = [0.15,0.25,0.6]
+            probs = [0.1,0.2,0.7]
         elif 12 < len(self.tokenized) <= 20:
             num_repls = 3
-            probs = [0.1,0.15,0.3,0.45]
+            probs = [0.05,0.1,0.3,0.55]
         else:
             num_repls = 4
-            probs = [0.05,0.07,0.25,0.35,0.28]
+            probs = [0.05,0.05,0.15,0.35,0.4]
 
         #count = math.floor(pow(random.randint(1, 11), 2) / 50) + 1
         count = npchoice([i for i in range(num_repls + 1)],p=probs) #original (a1)
@@ -151,7 +151,8 @@ class Errorifier:
 
         for x in range(count):
             # Note: verb_error redirects to replace_error and vice versa if nothing happened
-            error_probs = [.30,.25,.25,.20] #original (a1)
+            #error_probs = [.30,.25,.25,.20] #original (a1)
+            error_probs = [.1,.7,.1,.1] #original (a1)
             #error_probs = [.25,.30,.30,.15] # (a2)
             #error_probs = [.40,.25,.25,.10] #(a3)
             #error_probs = [.30,.30,.30,.10] #(a4)
