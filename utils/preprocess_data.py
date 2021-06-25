@@ -326,6 +326,8 @@ def add_labels_to_the_tokens(source_tokens, labels, delimeters=SEQ_DELIMETERS):
 
 
 def convert_data_from_raw_files(source_file, target_file, output_file, chunk_size):
+    if os.path.exists(output_file):
+        os.remove(output_file)
     tagged = []
     source_data, target_data = read_parallel_lines(source_file, target_file)
     print(f"The size of raw dataset is {len(source_data)} file lines")
@@ -357,14 +359,14 @@ def convert_data_from_raw_files(source_file, target_file, output_file, chunk_siz
             cnt_total += len(alignments)
             tagged.extend(alignments)
         if len(tagged) > chunk_size:
-            write_lines(output_file, tagged, mode='w')
+            write_lines(output_file, tagged, mode='a')
             tagged = []
 
     print(f"Overall extracted {cnt_total}. "
           f"Original TP {cnt_tp}."
           f" Original TN {cnt_all - cnt_tp}")
     if tagged:
-        write_lines(output_file, tagged, mode='w')
+        write_lines(output_file, tagged, mode='a')
 
 
 def convert_labels_into_edits(labels):
