@@ -148,3 +148,5 @@ files/dual_files/incorr_sentences.txt.lock
 files/neural_files/inputs_labels.txt
 files/neural_files/train.txt
 files/neural_files/test.txt
+files/neural_files/train_small.txt
+files/neural_files/test_small.txt

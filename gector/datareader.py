@@ -3,6 +3,7 @@ import logging
 import re
 from random import random
 from typing import Dict, List
+from tqdm import tqdm
 
 from allennlp.common.file_utils import cached_path
 from allennlp.data.dataset_readers.dataset_reader import DatasetReader
@@ -70,7 +71,7 @@ class Seq2LabelsDatasetReader(DatasetReader):
         file_path = cached_path(file_path)
         with open(file_path, "r") as data_file:
             logger.info("Reading instances from lines in file at: %s", file_path)
-            for line in data_file:
+            for line in tqdm(data_file, total=self.number_of_lines(file_path, batch_size=1), position=0, leave=True):  # tqdm introduced by hand by ERS
                 line = line.strip("\n")
                 # skip blank and broken lines
                 if not line or (not self._test_mode and self._broken_dot_strategy == 'skip'
@@ -97,7 +98,7 @@ class Seq2LabelsDatasetReader(DatasetReader):
                 if instance:
                     yield instance
 
-
+    ### introduced by hand by ERS
     def number_of_lines(self, file_path, batch_size):
         # if `file_path` is a URL, redirect to the cache
         with open(file_path, "r") as data_file:
