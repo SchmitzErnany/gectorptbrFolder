@@ -23,7 +23,6 @@ def predict_for_file(input_file, output_file, model, batch_size=32):
 
     with open(output_file, 'w') as f:
         f.write("\n".join([" ".join(x) for x in predictions]) + '\n')
-        print(test_data)
     return cnt_corrections
 
 
