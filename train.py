@@ -104,11 +104,12 @@ def main(args):
                              tn_prob=args.tn_prob,
                              tp_prob=args.tp_prob,
                              special_tokens_fix=args.special_tokens_fix)
+    
     train_data = reader.read(args.train_set)
     dev_data = reader.read(args.dev_set)
 
-    train_num_batches = reader.number_of_lines(args.train_set, args.batch_size)  # introduced by hand by ERS
-    dev_num_batches = reader.number_of_lines(args.dev_set, args.batch_size)  # introduced by hand by ERS
+    train_num_batches = reader.number_of_lines(args.train_set, args.batch_size, ispath=True)  # introduced by hand by ERS
+    dev_num_batches = reader.number_of_lines(args.dev_set, args.batch_size, ispath=True)  # introduced by hand by ERS
 
     default_tokens = [DEFAULT_OOV_TOKEN, DEFAULT_PADDING_TOKEN]
     namespaces = ['labels', 'd_tags']
@@ -123,7 +124,6 @@ def main(args):
                                                           'd_tags': 2},
                                           tokens_to_add=tokens_to_add)
     vocab.save_to_files(os.path.join(args.model_dir, 'vocabulary'))
-
     print("Data is loaded")
     model = get_model(weights_name, vocab,
                       tune_bert=args.tune_bert,
@@ -225,9 +225,9 @@ if __name__ == '__main__':
                         default=3)
     parser.add_argument('--skip_correct',
                         type=int,
-                        help='If set than correct sentences will be skipped '
+                        help='If set then correct sentences will be skipped '
                              'by data reader.',
-                        default=1)
+                        default=0)
     parser.add_argument('--skip_complex',
                         type=int,
                         help='If set than complex corrections will be skipped '

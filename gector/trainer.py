@@ -27,6 +27,8 @@ from allennlp.training.optimizers import Optimizer
 from allennlp.training.tensorboard_writer import TensorboardWriter
 from allennlp.training.trainer_base import TrainerBase
 
+from tqdm import tqdm
+
 logger = logging.getLogger(__name__)
 
 
@@ -309,6 +311,8 @@ class Trainer(TrainerBase):
 
         train_loss = 0.0
         # Set the model to "train" mode.
+        print(f'\nEpoch {epoch}/{self._num_epochs}')
+        print(f'Training:')
         self.model.train()
 
         num_gpus = len(self._cuda_devices)
@@ -328,9 +332,10 @@ class Trainer(TrainerBase):
         histogram_parameters = set(self.model.get_parameters_for_histogram_tensorboard_logging())
 
         logger.info("Training")
-        train_generator_tqdm = Tqdm.tqdm(train_generator, total=self.train_num_batches)
+        train_generator_tqdm = tqdm(train_generator, total=self.train_num_batches)#, colour='#3399ff')
         cumulative_batch_size = 0
         self.optimizer.zero_grad()
+
         for batch_group in train_generator_tqdm:
             batches_this_epoch += 1
             self._batch_num_total += 1
@@ -467,6 +472,7 @@ class Trainer(TrainerBase):
         """
         logger.info("Validating")
 
+        print(f'Validation:')
         self.model.eval()
 
         # Replace parameter values with the shadow values from the moving averages.
@@ -485,7 +491,7 @@ class Trainer(TrainerBase):
         num_validation_batches = math.ceil(
             val_iterator.get_num_batches(self._validation_data) / num_gpus
         )
-        val_generator_tqdm = Tqdm.tqdm(val_generator, total=self.dev_num_batches)
+        val_generator_tqdm = tqdm(val_generator, total=self.dev_num_batches)#, colour='#33cc00')
         batches_this_epoch = 0
         val_loss = 0
         for batch_group in val_generator_tqdm:
