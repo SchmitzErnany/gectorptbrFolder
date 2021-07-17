@@ -227,7 +227,7 @@ if __name__ == '__main__':
                         type=int,
                         help='If set then correct sentences will be skipped '
                              'by data reader.',
-                        default=0)
+                        default=1)
     parser.add_argument('--skip_complex',
                         type=int,
                         help='If set than complex corrections will be skipped '
