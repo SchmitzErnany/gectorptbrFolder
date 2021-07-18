@@ -24,7 +24,6 @@ for i, lemma in enumerate(NOUNADJ_lemma_values):
     lemma_array = nounAdj_df.loc[lemma].values
     nounAdj_full_listOfArrays.append(lemma_array)
 pickle.dump(nounAdj_full_listOfArrays, open("pickle/nounAdj_relations.p","wb"))
-#%%
 
 Verb_full_listOfArrays = []
 for key in verb_df_dict.keys():
@@ -129,19 +128,48 @@ prepArt_pickle = pickle.load(open('pickle/prepArt_relations.p', 'rb'))
 verb_pickle = pickle.load(open('pickle/verb_relations.p', 'rb'))
 
 
+
 Vdetaildic = {}
 for i, verb in enumerate(verb_pickle):
     if i%5000 == 0:
         print(i)
     try:
         for j, (word, tag) in enumerate(verb):
-            verb_nodupes = verb#np.array(list(set(verbI)))
+            mask_dupe = verb[:,0] == word
+            if sum(mask_dupe) > 1:
+                postag = 'and'.join(sorted(list(verb[:,1][mask_dupe])))
+                entry = np.array([word, postag])
+                verb_deldupes = np.delete(verb, np.where(mask_dupe), 0)
+                verb_joinpos = np.vstack([verb_deldupes, entry])
+    except (IndexError, ValueError) as e:
+        #print('one row only =>', verbI)
+        pass
+        
+    try:
+        for j, (word, tag) in enumerate(verb_joinpos):
+            verb_nodupes = verb_joinpos#np.array(list(set(verbI)))
             Vdetaildic[(word,tag)] = np.delete(verb_nodupes, np.where(verb_nodupes[:,0] == word), 0)
             #print(verbI[:,0])
     except (IndexError, ValueError) as e:
         #print('one row only =>', verbI)
         pass
-    
+#%%
+
+### this Vdetaildic was when we did not have the same word with different postags. In
+### the implementation above, we managed to join the postags of that duplicate word.
+#Vdetaildic = {}
+#for i, verb in enumerate(verb_pickle):
+#    if i%5000 == 0:
+#        print(i)
+#    try:
+#        for j, (word, tag) in enumerate(verb):
+#            verb_nodupes = verb#np.array(list(set(verbI)))
+#            Vdetaildic[(word,tag)] = np.delete(verb_nodupes, np.where(verb_nodupes[:,0] == word), 0)
+#            #print(verbI[:,0])
+#    except (IndexError, ValueError) as e:
+#        #print('one row only =>', verbI)
+#        pass
+
 nounAdjdetaildic = {}
 for i, nounAdj in enumerate(nounAdj_pickle):
     if i%5000 == 0:
@@ -198,9 +226,19 @@ for i, (word, tag) in enumerate(Vdetaildic.keys()):
     value = Vdetaildic[(word, tag)]
     value_shape_0 = value.shape[0]
     for word_tag in Vdetaildic[(word, tag)]:
-        words_tags_str = word + '_' + word_tag[0] + ':' + tag[:3]+tag[4:6] + '_' + word_tag[1][:3]+word_tag[1][4:6]
+        if len(tag) > 10:
+            first_tag = tag[:3]+tag[4:6] + 'and' + tag[10:13]+tag[14:16]
+        else:
+            first_tag = tag[:3]+tag[4:6]
+        if len(word_tag[1]) > 10:
+            second_tag = word_tag[1][:3]+word_tag[1][4:6] + 'and' + word_tag[1][10:13]+word_tag[1][14:16]
+        else:
+            second_tag = word_tag[1][:3]+word_tag[1][4:6]
+        if first_tag == second_tag: # we do not want to correct different spellings of the same word
+            continue
+        words_tags_str = word + '_' + word_tag[0] + ':' + first_tag + '_' + second_tag
         verb_form_vocab_list.append(words_tags_str)
-
+        
 verb_form_vocab_df = pd.DataFrame(verb_form_vocab_list)
 verb_form_vocab_df.to_csv('verb-form-vocab.txt', index=False, header=False, sep='\t', quoting=csv.QUOTE_NONE)
 
@@ -216,53 +254,9 @@ verb_form_vocab_df.to_csv('verb-form-vocab.txt', index=False, header=False, sep=
 
 
 
-#%%
-
-#def expand_dict(d):
-#    result = {}
-#    for key in d:
-#        if key in result:
-#            result[key] = result[key].union(d[key].difference({key}))
-#        else:
-#            result[key] = d[key].difference({key})
-#        for item in d[key]:
-#            if item in result:
-#                if item != key:
-#                    result[item] = result[item].union(d[key].difference({item})).union({key})
-#                else:
-#                    result[item] = result[item].union(d[key].difference({item}))
-#            else:
-#                if item != key:
-#                    result[item] = d[key].difference({item}).union({key})
-#                else:
-#                    d[key].difference({item})
-#
-#    
-#    for key in result:
-#        result[key]=list(result[key])
-#    return result
-#
-#
-#with open(verbs_file,"r") as ip_file:
-#    ip_lines = ip_file.readlines()
-#    words = {}
-#    for line in ip_lines:
-#        line = line.strip().split()
-#        if len(line) != 3:
-#            print(line)
-#        word = line[1]
-#        word_form = line[0]
-#        if word in words:
-#            words[word].add(word_form)
-#        else:
-#            words[word]={word_form}
-#
-#
-#result = expand_dict(words)
-#pickle.dump(result,open("common_VerbNoun_ptbr.p","wb"))
 
 
-#%%
+
 
 
 
