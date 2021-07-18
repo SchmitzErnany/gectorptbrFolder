@@ -7,7 +7,7 @@ verbs_file = "common_VerbNoun_ptbr.txt"
 file_df = pd.read_csv('common_VerbNoun_ptbr.txt', sep='\s', names=['word','lemma','POS_tag'])
 nounAdj_df = file_df[file_df['POS_tag'].str.contains('^(N|A).+')].set_index(['lemma'])
 prepArt_df = file_df[file_df['POS_tag'].str.contains('^(S8D|D).+')].set_index(['lemma'])
-verb_regexes = ['IP', 'II', 'IS', 'IM', 'IF', 'IC', 'SP', 'SI', '(SF|N0)']
+verb_regexes = ['IP', 'II', 'IS', 'IM', 'IF', 'IC', 'SP', 'SI', 'SF', 'N0', '(SF|N0)1S', '(SF|N0)1P', '(SF|N0)3S', '(SF|N0)3P']
 verb_df_dict = {}
 for verb_regex in verb_regexes:
     verb_df_dict[verb_regex] = file_df[file_df['POS_tag'].str.contains('^'+'VM'+verb_regex+'.+')]\
@@ -17,7 +17,7 @@ for verb_regex in verb_regexes:
 #%%
 
 nounAdj_full_listOfArrays = []
-NOUNADJ_lemma_values = nounAdj_df.index
+NOUNADJ_lemma_values = set(nounAdj_df.index)
 for i, lemma in enumerate(NOUNADJ_lemma_values):
     if i%5000 == 0:
         print(i)
@@ -27,7 +27,7 @@ pickle.dump(nounAdj_full_listOfArrays, open("pickle/nounAdj_relations.p","wb"))
 
 Verb_full_listOfArrays = []
 for key in verb_df_dict.keys():
-    verb_lemma_values = verb_df_dict[key].index
+    verb_lemma_values = set(verb_df_dict[key].index)
     for i, lemma in enumerate(verb_lemma_values):
         if i%1000 == 0:
             print(i)
@@ -36,7 +36,7 @@ for key in verb_df_dict.keys():
 pickle.dump(Verb_full_listOfArrays, open("pickle/verb_relations.p","wb"))
 
 prepArt_full_listOfArrays = []
-PREPART_lemma_values = prepArt_df.index
+PREPART_lemma_values = set(prepArt_df.index)
 for i, lemma in enumerate(PREPART_lemma_values):
     if i%5000 == 0:
         print(i)
@@ -127,32 +127,47 @@ nounAdj_pickle = pickle.load(open('pickle/nounAdj_relations.p', 'rb'))
 prepArt_pickle = pickle.load(open('pickle/prepArt_relations.p', 'rb'))
 verb_pickle = pickle.load(open('pickle/verb_relations.p', 'rb'))
 
-
+from collections import Counter
 
 Vdetaildic = {}
 for i, verb in enumerate(verb_pickle):
     if i%5000 == 0:
         print(i)
     try:
-        for j, (word, tag) in enumerate(verb):
-            mask_dupe = verb[:,0] == word
-            if sum(mask_dupe) > 1:
-                postag = 'and'.join(sorted(list(verb[:,1][mask_dupe])))
-                entry = np.array([word, postag])
-                verb_deldupes = np.delete(verb, np.where(mask_dupe), 0)
-                verb_joinpos = np.vstack([verb_deldupes, entry])
+        dupe_words = [item for item, count in Counter(verb[:,0]).items() if count > 1]
+        for _ in dupe_words:
+            for j, (word, tag) in enumerate(verb):
+                mask_dupe = verb[:,0] == word
+                if sum(mask_dupe) > 1:
+                    postag = 'and'.join(sorted(list(verb[:,1][mask_dupe])))
+                    entry = np.array([word, postag])
+                    verb_deldupes = np.delete(verb, np.where(mask_dupe), 0)
+                    verb_joinpos = np.vstack([verb_deldupes, entry])
+                    verb = verb_joinpos
+                    break
+#                if word == 'abria':
+#                    print('i,j:\n', i,j)
+#                    print('verb:\n', verb)
+#                    print('mask_dupe:\n', mask_dupe)
+#                    print('postag:\n',postag)
+#                    print('entry:\n',entry)
+#                    print('verb_deldupes:\n',verb_deldupes)
+#                    print('verb_joinpos:\n',verb_joinpos, '\n===============\n')
     except (IndexError, ValueError) as e:
         #print('one row only =>', verbI)
         pass
         
     try:
-        for j, (word, tag) in enumerate(verb_joinpos):
-            verb_nodupes = verb_joinpos#np.array(list(set(verbI)))
+        for j, (word, tag) in enumerate(verb):
+            verb_nodupes = verb#np.array(list(set(verbI)))
             Vdetaildic[(word,tag)] = np.delete(verb_nodupes, np.where(verb_nodupes[:,0] == word), 0)
             #print(verbI[:,0])
     except (IndexError, ValueError) as e:
         #print('one row only =>', verbI)
         pass
+
+    
+
 #%%
 
 ### this Vdetaildic was when we did not have the same word with different postags. In
