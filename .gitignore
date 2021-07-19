@@ -143,6 +143,8 @@ PIE/errorify/ptbr/dual_files/corr_sentences.txt.lock
 PIE/errorify/ptbr/dual_files/incorr_sentences.txt.lock
 files/dual_files/corr_sentences.txt
 files/dual_files/incorr_sentences.txt
+files/corr_sentences.txt
+files/incorr_sentences.txt
 files/dual_files/corr_sentences.txt.lock
 files/dual_files/incorr_sentences.txt.lock
 files/neural_files/inputs_labels.txt

@@ -353,8 +353,9 @@ def convert_data_from_raw_files(source_file, target_file, output_file, chunk_siz
             # do it again for debugging
             aligned_sent = align_sequences(source_sent, target_sent)
             check_sent = convert_tagged_line(aligned_sent)
-            print(f"Incorrect pair: \n{target_sent}\n{check_sent}")
-            continue
+            # print(f"\nIncorrect pair: \nsentence in the corr_sentences.txt: {target_sent}\ndecoded sentence from the incorr_sentences.txt using verb-form-vocab.txt: {check_sent}")
+            if 'mos ' not in source_sent: # introduced by ERS to accept the VMI[IP]1P0='...mos' (unique) which can transform into VMI[IP]1S0 (double)
+                continue
         if alignments:
             cnt_total += len(alignments)
             tagged.extend(alignments)

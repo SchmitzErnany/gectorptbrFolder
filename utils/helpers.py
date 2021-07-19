@@ -23,6 +23,10 @@ def get_verb_form_dicts():
             if decode_key not in decode:
                 encode[words] = tags
                 decode[decode_key] = word2
+            # (below condition) introduced by ERS to accept encoding from the 2 forms VMI[IP]1S0 into the VMI[IP]1P0. This change removes many of undesired labels 'REPLACE_admitiu', for example.
+            elif decode_key in decode and words not in encode:
+                encode[words] = tags
+
     return encode, decode
 
 
