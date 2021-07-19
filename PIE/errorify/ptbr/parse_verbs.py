@@ -128,12 +128,14 @@ prepArt_pickle = pickle.load(open('pickle/prepArt_relations.p', 'rb'))
 verb_pickle = pickle.load(open('pickle/verb_relations.p', 'rb'))
 
 from collections import Counter
+import re
 
 Vdetaildic = {}
 for i, verb in enumerate(verb_pickle):
     if i%5000 == 0:
         print(i)
     try:
+        # joining 'VM.1S' and 'VM.3S' into 'VM.1SandVM.3S' when both former definitions are for the same word, e.g. 'fazia'
         dupe_words = [item for item, count in Counter(verb[:,0]).items() if count > 1]
         for _ in dupe_words:
             for j, (word, tag) in enumerate(verb):
@@ -145,25 +147,19 @@ for i, verb in enumerate(verb_pickle):
                     verb_joinpos = np.vstack([verb_deldupes, entry])
                     verb = verb_joinpos
                     break
-#                if word == 'abria':
-#                    print('i,j:\n', i,j)
-#                    print('verb:\n', verb)
-#                    print('mask_dupe:\n', mask_dupe)
-#                    print('postag:\n',postag)
-#                    print('entry:\n',entry)
-#                    print('verb_deldupes:\n',verb_deldupes)
-#                    print('verb_joinpos:\n',verb_joinpos, '\n===============\n')
-    except (IndexError, ValueError) as e:
-        #print('one row only =>', verbI)
-        pass
-        
-    try:
+        # defining the tag 'VM.1SandVM.3S' for all separate 'VM.3S', e.g. 'fazem' (in comparison to 'faço')
+        for j, (word, tag) in enumerate(verb):
+            regex_3S = re.compile('^VM(..)3S0')
+            if regex_3S.search(tag):
+                new_tag = 'VM' + regex_3S.search(tag).group(1) + '1S0' + 'and' + 'VM' + regex_3S.search(tag).group(1) + '3S0'
+                verb[j][1] = new_tag
+        # defining a dictionary with the entry and its substitutes
         for j, (word, tag) in enumerate(verb):
             verb_nodupes = verb#np.array(list(set(verbI)))
             Vdetaildic[(word,tag)] = np.delete(verb_nodupes, np.where(verb_nodupes[:,0] == word), 0)
-            #print(verbI[:,0])
+    
+    # one row only, so no substitutions
     except (IndexError, ValueError) as e:
-        #print('one row only =>', verbI)
         pass
 
     
