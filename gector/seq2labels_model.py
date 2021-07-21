@@ -139,15 +139,12 @@ class Seq2Labels(Model):
             [batch_size, sequence_length, self.num_detect_classes])
         error_probs = class_probabilities_d[:, :, self.incorr_index] * mask
         incorr_prob = torch.max(error_probs, dim=-1)[0]
-        print('\n\nCORRECTNESS PREDICTIONS')
-        print('error_probs:\n',error_probs)
-        #print('class_probabilities_labels:\n',class_probabilities_labels[0][-3])
-        #print('before additional_confidence:\n', class_probabilities_labels[0][0])
+        # print('\n\nCORRECTNESS PREDICTIONS')
+        # print('error_probs:\n',error_probs)
         if self.confidence > 0:
             probability_change = [self.confidence] + [0] * (self.num_labels_classes - 1)
             class_probabilities_labels += torch.FloatTensor(probability_change).repeat(
                 (batch_size, sequence_length, 1)).to(class_probabilities_labels.device)
-            #print('after additional_confidence:\n', class_probabilities_labels[0][0])
 
         output_dict = {"logits_labels": logits_labels,
                        "logits_d_tags": logits_d,

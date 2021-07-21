@@ -142,8 +142,8 @@ class GecBERTModel(object):
             predictions.append(prediction)
 
         preds, idx, error_probs = self._convert(predictions)
-        print('\nLABELS PREDICTIONS')
-        print('preds:\n',preds,'\nidx:\n',idx)
+        # print('\nLABELS PREDICTIONS')
+        # print('preds:\n',preds,'\nidx:\n',idx)
         t55 = time()
         if self.log:
             print(f"Inference time {t55 - t11}")
@@ -287,7 +287,7 @@ class GecBERTModel(object):
 
                 edits.append(action)
             all_results.append(get_target_sent_by_edits(tokens, edits))
-            print('final_results:\n', all_results)
+            # print('final_results:\n', all_results)
         return all_results
 
     def handle_batch(self, full_batch):
