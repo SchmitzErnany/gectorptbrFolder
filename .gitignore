@@ -159,3 +159,5 @@ files/neural_files/test_30.txt
 files/neural_files/train_20.txt
 files/neural_files/test_20.txt
 test.py
+OUTPUT_FILE.txt
+eval_after_train.txt
