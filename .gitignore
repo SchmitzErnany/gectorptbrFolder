@@ -158,8 +158,10 @@ files/neural_files/train_30.txt
 files/neural_files/test_30.txt
 files/neural_files/train_20.txt
 files/neural_files/test_20.txt
+files/neural_files/train_50.txt
+files/neural_files/test_50.txt
 files/neural_files/train_minimal.txt
 files/neural_files/test_minimal.txt
-test.py
 OUTPUT_FILE.txt
 eval_after_train.txt
+test.py
