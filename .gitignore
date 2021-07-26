@@ -162,4 +162,6 @@ files/neural_files/train_50.txt
 files/neural_files/test_50.txt
 files/neural_files/train_minimal.txt
 files/neural_files/test_minimal.txt
+OUTPUT_FILE.txt
+eval_after_train.txt
 test.py
