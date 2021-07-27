@@ -29,7 +29,7 @@ Verb_full_listOfArrays = []
 for key in verb_df_dict.keys():
     verb_lemma_values = set(verb_df_dict[key].index)
     for i, lemma in enumerate(verb_lemma_values):
-        if i%1000 == 0:
+        if i%5000 == 0:
             print(i)
         lemma_array = verb_df_dict[key].loc[lemma].values
         Verb_full_listOfArrays.append(lemma_array)
@@ -38,7 +38,7 @@ pickle.dump(Verb_full_listOfArrays, open("pickle/verb_relations.p","wb"))
 prepArt_full_listOfArrays = []
 PREPART_lemma_values = set(prepArt_df.index)
 for i, lemma in enumerate(PREPART_lemma_values):
-    if i%5000 == 0:
+    if i%300 == 0:
         print(i)
     lemma_array = prepArt_df.loc[lemma].values
     prepArt_full_listOfArrays.append(lemma_array)
@@ -83,10 +83,16 @@ for i, verb in enumerate(verb_pickle):
     try:
         for word in verb[:,0]:
             verb_nodupes = np.array(list(set(verb[:,0])))
-            Vdic[word] = list(np.delete(verb_nodupes, np.where(verb_nodupes == word)))
-            #print(verbI[:,0])
+            verb_deletekeyfromvalue = list(np.delete(verb_nodupes, np.where(verb_nodupes == word)))
+            if word not in Vdic.keys():
+                Vdic[word] = verb_deletekeyfromvalue
+            else:
+                Vdic[word] += verb_deletekeyfromvalue
+                Vdic[word] = list(set(Vdic[word]))
+#            if word == 'foram':
+#                print(verb, verb_nodupes, Vdic[word])
     except IndexError:
-        #print('one row only =>', verbI)
+        #print('one row only =>', verb)
         pass
 
 
