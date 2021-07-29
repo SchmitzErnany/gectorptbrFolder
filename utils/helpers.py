@@ -1,4 +1,5 @@
 import os
+import math
 from pathlib import Path
 
 
@@ -139,10 +140,13 @@ def apply_reverse_transformation(source_token, transform):
         return source_token
 
 
-def read_parallel_lines(fn1, fn2):
+def read_parallel_lines(fn1, fn2, cut=1):
     lines1 = read_lines(fn1, skip_strip=True)
     lines2 = read_lines(fn2, skip_strip=True)
     assert len(lines1) == len(lines2), "the number of lines of the first file does not match the second's. Make sure that both paths exist."
+    cutoff = math.floor(len(lines1)*cut)
+    lines1 = lines1[:cutoff]
+    lines2 = lines2[:cutoff]
     out_lines1, out_lines2 = [], []
     for line1, line2 in zip(lines1, lines2):
         if not line1.strip() or not line2.strip():

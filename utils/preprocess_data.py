@@ -329,7 +329,7 @@ def convert_data_from_raw_files(source_file, target_file, output_file, chunk_siz
     if os.path.exists(output_file):
         os.remove(output_file)
     tagged = []
-    source_data, target_data = read_parallel_lines(source_file, target_file)
+    source_data, target_data = read_parallel_lines(source_file, target_file, args.cut)
     print(f"The size of raw dataset is {len(source_data)} file lines")
     cnt_total, cnt_all, cnt_tp = 0, 0, 0
     for source_sent, target_sent in tqdm(zip(source_data, target_data), total = len(source_data)):
@@ -339,6 +339,8 @@ def convert_data_from_raw_files(source_file, target_file, output_file, chunk_siz
             aligned_sent = align_sequences(source_sent, target_sent)
         if source_sent != target_sent:
             cnt_tp += 1
+        #     print(aligned_sent, '\n', source_sent, '\n', target_sent)
+        # break
         alignments = [aligned_sent]
         cnt_all += len(alignments)
         try:
@@ -354,8 +356,9 @@ def convert_data_from_raw_files(source_file, target_file, output_file, chunk_siz
             aligned_sent = align_sequences(source_sent, target_sent)
             check_sent = convert_tagged_line(aligned_sent)
             # print(f"\nIncorrect pair: \nsentence in the corr_sentences.txt: {target_sent}\ndecoded sentence from the incorr_sentences.txt using verb-form-vocab.txt: {check_sent}")
-            if 'mos ' not in source_sent: # introduced by ERS to accept the VMI[IP]1P0='...mos' (unique) which can transform into VMI[IP]1S0 (double)
-                continue
+            # if 'mos ' not in source_sent: # introduced by ERS to accept the VMI[IP]1P0='...mos' (unique) which can transform into VMI[IP]1S0 (double)
+            #     continue
+            #continue
         if alignments:
             cnt_total += len(alignments)
             tagged.extend(alignments)
@@ -483,6 +486,10 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--output_file',
                         help='Path to the output file',
                         required=True)
+    parser.add_argument('-c', '--cut',
+                        type=float,
+                        help='cut a sample of the file',
+                        default=1)
     parser.add_argument('--chunk_size',
                         type=int,
                         help='Dump each chunk size.',

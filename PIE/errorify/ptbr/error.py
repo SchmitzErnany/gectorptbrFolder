@@ -7,7 +7,7 @@ from errorifier import Errorifier
 
 CORRECT_FILE = sys.argv[2] + "/" + 'corr_sentences.txt'
 ERRORED_FILE = sys.argv[2] + "/" + 'incorr_sentences.txt'
-FLUSH_SIZE = 100000
+FLUSH_SIZE = 1000000
 BATCH_SIZE = 200
 
 def flush_queue(pairs, flush=False):

@@ -7,7 +7,7 @@ verbs_file = "common_VerbNoun_ptbr.txt"
 file_df = pd.read_csv('common_VerbNoun_ptbr.txt', sep='\s', names=['word','lemma','POS_tag'])
 nounAdj_df = file_df[file_df['POS_tag'].str.contains('^(N|A).+')].set_index(['lemma'])
 prepArt_df = file_df[file_df['POS_tag'].str.contains('^(S8D|D).+')].set_index(['lemma'])
-verb_regexes = ['IP', 'II', 'IS', 'IM', 'IF', 'IC', 'SP', 'SI', 'SF', 'N0', '(SF|N0)1S', '(SF|N0)1P', '(SF|N0)3S', '(SF|N0)3P']
+verb_regexes = ['IP', 'II', 'IS', 'IM', 'IF', 'IC', 'SP', 'SI', '(SF|N0)']
 verb_df_dict = {}
 for verb_regex in verb_regexes:
     verb_df_dict[verb_regex] = file_df[file_df['POS_tag'].str.contains('^'+'VM'+verb_regex+'.+')]\
@@ -32,6 +32,9 @@ for key in verb_df_dict.keys():
         if i%5000 == 0:
             print(i)
         lemma_array = verb_df_dict[key].loc[lemma].values
+        if len(lemma_array.shape) == 1:
+            continue
+        lemma_array = np.concatenate([lemma_array, [[lemma]]*lemma_array.shape[0]], axis=1)
         Verb_full_listOfArrays.append(lemma_array)
 pickle.dump(Verb_full_listOfArrays, open("pickle/verb_relations.p","wb"))
 
@@ -75,13 +78,15 @@ for i, prepArt in enumerate(prepArt_pickle):
     except IndexError:
         #print('one row only =>', verbI)
         pass
-
+        
 Vdic = {}
 for i, verb in enumerate(verb_pickle):
     if i%5000 == 0:
         print(i)
     try:
         for word in verb[:,0]:
+            if word == 'ser':
+                print(verb)
             verb_nodupes = np.array(list(set(verb[:,0])))
             verb_deletekeyfromvalue = list(np.delete(verb_nodupes, np.where(verb_nodupes == word)))
             if word not in Vdic.keys():
@@ -144,25 +149,28 @@ for i, verb in enumerate(verb_pickle):
         # joining 'VM.1S' and 'VM.3S' into 'VM.1SandVM.3S' when both former definitions are for the same word, e.g. 'fazia'
         dupe_words = [item for item, count in Counter(verb[:,0]).items() if count > 1]
         for _ in dupe_words:
-            for j, (word, tag) in enumerate(verb):
+            for j, (word, tag, lemma) in enumerate(verb):
                 mask_dupe = verb[:,0] == word
                 if sum(mask_dupe) > 1:
                     postag = 'and'.join(sorted(list(verb[:,1][mask_dupe])))
-                    entry = np.array([word, postag])
+                    entry = np.array([word, postag, lemma])
                     verb_deldupes = np.delete(verb, np.where(mask_dupe), 0)
                     verb_joinpos = np.vstack([verb_deldupes, entry])
                     verb = verb_joinpos
+                    if word == 'timbrar':
+                        print(verb, mask_dupe, sum(mask_dupe))
+                    #print(word, verb)
                     break
         # defining the tag 'VM.1SandVM.3S' for all separate 'VM.3S', e.g. 'fazem' (in comparison to 'faço')
-        for j, (word, tag) in enumerate(verb):
+        for j, (word, tag, lemma) in enumerate(verb):
             regex_3S = re.compile('^VM(..)3S0')
             if regex_3S.search(tag):
                 new_tag = 'VM' + regex_3S.search(tag).group(1) + '1S0' + 'and' + 'VM' + regex_3S.search(tag).group(1) + '3S0'
                 verb[j][1] = new_tag
         # defining a dictionary with the entry and its substitutes
-        for j, (word, tag) in enumerate(verb):
+        for j, (word, tag, lemma) in enumerate(verb):
             verb_nodupes = verb#np.array(list(set(verbI)))
-            Vdetaildic[(word,tag)] = np.delete(verb_nodupes, np.where(verb_nodupes[:,0] == word), 0)
+            Vdetaildic[(word,tag,lemma)] = np.delete(verb_nodupes, np.where(verb_nodupes[:,0] == word), 0)
     
     # one row only, so no substitutions
     except (IndexError, ValueError) as e:
@@ -239,21 +247,21 @@ verb_form_vocab_list = []
 #        words_tags_str = word + '_' + word_tag[0] + ':' + first_tag + '_' + second_tag
 #        verb_form_vocab_list.append(words_tags_str)
 # verbs
-for i, (word, tag) in enumerate(Vdetaildic.keys()):
-    value = Vdetaildic[(word, tag)]
+for i, (word, tag, lemma) in enumerate(Vdetaildic.keys()):
+    value = Vdetaildic[(word, tag, lemma)]
     value_shape_0 = value.shape[0]
-    for word_tag in Vdetaildic[(word, tag)]:
+    for word_tag_lemma in Vdetaildic[(word, tag, lemma)]:
         if len(tag) > 10:
             first_tag = tag[:3]+tag[4:6] + 'and' + tag[10:13]+tag[14:16]
         else:
             first_tag = tag[:3]+tag[4:6]
-        if len(word_tag[1]) > 10:
-            second_tag = word_tag[1][:3]+word_tag[1][4:6] + 'and' + word_tag[1][10:13]+word_tag[1][14:16]
+        if len(word_tag_lemma[1]) > 10:
+            second_tag = word_tag_lemma[1][:3]+word_tag_lemma[1][4:6] + 'and' + word_tag_lemma[1][10:13]+word_tag_lemma[1][14:16]
         else:
-            second_tag = word_tag[1][:3]+word_tag[1][4:6]
+            second_tag = word_tag_lemma[1][:3]+word_tag_lemma[1][4:6]
         if first_tag == second_tag: # we do not want to correct different spellings of the same word
             continue
-        words_tags_str = word + '_' + word_tag[0] + ':' + first_tag + '_' + second_tag
+        words_tags_str = word + '_' + word_tag_lemma[0] + ':' + first_tag + '_' + second_tag
         verb_form_vocab_list.append(words_tags_str)
         
 verb_form_vocab_df = pd.DataFrame(verb_form_vocab_list)
