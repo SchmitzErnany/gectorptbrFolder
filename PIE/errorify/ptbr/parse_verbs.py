@@ -85,8 +85,6 @@ for i, verb in enumerate(verb_pickle):
         print(i)
     try:
         for word in verb[:,0]:
-            if word == 'ser':
-                print(verb)
             verb_nodupes = np.array(list(set(verb[:,0])))
             verb_deletekeyfromvalue = list(np.delete(verb_nodupes, np.where(verb_nodupes == word)))
             if word not in Vdic.keys():
@@ -94,6 +92,9 @@ for i, verb in enumerate(verb_pickle):
             else:
                 Vdic[word] += verb_deletekeyfromvalue
                 Vdic[word] = list(set(Vdic[word]))
+            if word == 'adéquo':
+                print(verb)
+                print(Vdic[word])
 #            if word == 'foram':
 #                print(verb, verb_nodupes, Vdic[word])
     except IndexError:
@@ -260,12 +261,49 @@ for i, (word, tag, lemma) in enumerate(Vdetaildic.keys()):
         else:
             second_tag = word_tag_lemma[1][:3]+word_tag_lemma[1][4:6]
         if first_tag == second_tag: # we do not want to correct different spellings of the same word
+            #print((word, tag, lemma), Vdetaildic[(word, tag, lemma)])
+            print(word, tag, lemma)
             continue
         words_tags_str = word + '_' + word_tag_lemma[0] + ':' + first_tag + '_' + second_tag
         verb_form_vocab_list.append(words_tags_str)
         
 verb_form_vocab_df = pd.DataFrame(verb_form_vocab_list)
 verb_form_vocab_df.to_csv('verb-form-vocab.txt', index=False, header=False, sep='\t', quoting=csv.QUOTE_NONE)
+
+#%% check redundancies
+
+from collections import defaultdict
+
+
+labelsdic = defaultdict(list)
+for e in verb_form_vocab_list:
+    words, labels = e.split(':')
+    word1, word2 = words.split('_')
+    if 'mosV' in word1+labels:
+        continue
+    labelsdic[word1 + labels].append(word2)
+
+uniquedic = defaultdict(list)
+for f in labelsdic:
+    if len(labelsdic[f]) < 2:
+        continue
+    uniquedic[f] = labelsdic[f]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

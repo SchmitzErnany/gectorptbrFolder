@@ -197,6 +197,10 @@ def align_sequences(source_sent, target_sent):
         tag, i1, i2, j1, j2 = diff
         source_part = _split(" ".join(source_tokens[i1:i2]))
         target_part = _split(" ".join(target_tokens[j1:j2]))
+        # if 'quando está conduzindo corrente elétrica imersa em um campo magnético.' in source_sent and (tag == 'insert' or tag == 'delete' or tag == 'replace'):
+        #     print(f'\n======= {tag} =======\nSOURCE_SENT\n', source_sent, '\nTARGET_SENT\n', target_sent)
+        #     print(i1, i2, source_tokens[i1:i2])
+        #     print(j1, j2, target_tokens[j1:j2])
         if tag == 'equal':
             continue
         elif tag == 'delete':
