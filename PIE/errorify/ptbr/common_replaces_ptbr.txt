@@ -1,0 +1,10 @@
+esta	está	1
+está	esta	1
+da	dá	1
+dá	da	1
+e	é	1
+é	e	1
+mal	mau	1
+mau	mal	1
+as	às	1
+às	as	1

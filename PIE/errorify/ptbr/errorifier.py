@@ -9,15 +9,15 @@ VERBS = pickle.load(open('common_Verb_ptbr.p', 'rb'))  # pickle.load(open('commo
 
 COMMON_INSERTS = set(pickle.load(open('common_inserts_ptbr.p', 'rb')))
 if COMMON_INSERTS == set():
-	COMMON_INSERTS = False
+	COMMON_INSERTS = []
 
 COMMON_REPLACES = pickle.load(open('common_replaces_ptbr.p', 'rb'))
 if COMMON_REPLACES == {}:
-	COMMON_REPLACES = False
+	COMMON_REPLACES = []
 
 COMMON_DELETES = pickle.load(open('common_deletes_ptbr.p','rb'))
 if COMMON_DELETES == {}:
-	COMMON_DELETES = False
+	COMMON_DELETES = []
 
 
 
@@ -41,8 +41,9 @@ class Errorifier:
     def no_error(self):
         return ' '.join(self.tokenized)
 
+
     def delete_error(self):
-        if COMMON_DELETES == False:
+        if COMMON_DELETES == []:
             return ' '.join(self.tokenized)
 
         if len(self.tokenized) > 0:
@@ -61,10 +62,54 @@ class Errorifier:
         return ' '.join(self.tokenized)
 
 
+    def insert_error(self):
+        """Delete a commonly inserted word."""
+        if COMMON_INSERTS == []:
+            return ' '.join(self.tokenized)
+
+        if len(self.tokenized) > 1:
+            insertable = [i for i, w in enumerate(self.tokenized) if w in COMMON_INSERTS]
+            if not insertable:
+                return self.sentence
+
+            index = random.choice(insertable)
+            del self.tokenized[index]
+        return ' '.join(self.tokenized)
+
+
+    def replace_error(self, redir=True):
+        """Add a common replace error."""
+        if COMMON_REPLACES == []:
+            return ' '.join(self.tokenized)
+
+        if len(self.tokenized) > 0:
+            replaceable = [i for i, w in enumerate(self.tokenized) if w in COMMON_REPLACES]
+            if not replaceable:
+                if redir:
+                    return self.verb_error(redir=False)
+                return self.sentence
+
+            index = random.choice(replaceable)
+            word = self.tokenized[index]
+            if not COMMON_REPLACES[word]:
+                return self.sentence
+
+            # Normalize probabilities
+            plist = list(COMMON_REPLACES[word].values())
+            plistsum = sum(plist)
+            plist = [x / plistsum for x in plist]
+
+            # Choose a bad word
+            repl = npchoice(list(COMMON_REPLACES[word].keys()), p=plist)
+            self.tokenized[index] = repl
+
+        return ' '.join(self.tokenized)
+
+
     def verb_error(self, redir=True):
         """Introduce a verb error from common_VerbNoun_ptbr.p."""
         # sentence_original = self.tokenized[:]
-        if VERBS == False:
+        if VERBS == []:
             return ' '.join(self.tokenized)
 
         if len(self.tokenized) > 0:
@@ -94,84 +139,46 @@ class Errorifier:
 
         return ' '.join(self.tokenized)
 
-    def insert_error(self):
-        """Delete a commonly inserted word."""
-        if COMMON_INSERTS == False:
-            return ' '.join(self.tokenized)
-
-        if len(self.tokenized) > 1:
-            deletable = [i for i, w in enumerate(self.tokenized) if w in COMMON_INSERTS]
-            if not deletable:
-                return self.sentence
-
-            index = random.choice(deletable)
-            del self.tokenized[index]
-        return ' '.join(self.tokenized)
-
-    def replace_error(self, redir=True):
-        """Add a common replace error."""
-        if COMMON_REPLACES == False:
-            return ' '.join(self.tokenized)
-
-        if len(self.tokenized) > 0:
-            deletable = [i for i, w in enumerate(self.tokenized) if w in COMMON_REPLACES]
-            if not deletable:
-                if redir:
-                    return self.verb_error(redir=False)
-                return self.sentence
-
-            index = random.choice(deletable)
-            word = self.tokenized[index]
-            if not COMMON_REPLACES[word]:
-                return self.sentence
-
-            # Normalize probabilities
-            plist = list(COMMON_REPLACES[word].values())
-            plistsum = sum(plist)
-            plist = [x / plistsum for x in plist]
-
-            # Choose a bad word
-            repl = npchoice(list(COMMON_REPLACES[word].keys()), p=plist)
-            self.tokenized[index] = repl
-
-        return ' '.join(self.tokenized)
 
     def error(self):
         """Introduce a random error."""
 
-        ### COMMENTED THIS OUT SINCE I AM ONLY GOING TO CONSIDER THE VERBS FROM NOW AND I AM GOING TO REPLACE THE VERBS IN A SENTENCE IN ONE GO.
-        # if len(self.tokenized) <= 5:
-        #     num_repls = 1
-        #     probs = [0.2,0.8]
-        # elif 5 < len(self.tokenized) <= 12:
-        #     num_repls = 2
-        #     probs = [0.1,0.2,0.7]
-        # elif 12 < len(self.tokenized) <= 20:
-        #     num_repls = 3
-        #     probs = [0.05,0.1,0.3,0.55]
-        # else:
-        #     num_repls = 4
-        #     probs = [0.05,0.05,0.15,0.35,0.4]
-        num_repls = 1; probs = [.0,1.0]
+        changes = [VERBS, COMMON_REPLACES, COMMON_INSERTS, COMMON_DELETES]; change_probs  = [0.5,0.5,.0,0.]; identifiers = [i for i in range(len(changes))];
+        multiple_index = {}; which_index_true = [];
+        if len(self.tokenized) > 0:
+            for i, w in enumerate(self.tokenized):
+                mi = [False]*len(changes); count = 0
+                if w in VERBS and change_probs[0] > 0:
+                    mi[0] = True; count += 1;
+                if w in COMMON_REPLACES and change_probs[1] > 0:
+                    mi[1] = True; count += 1;
+                if w in COMMON_INSERTS and change_probs[2] > 0:
+                    mi[2] = True; count += 1;
+                if w in COMMON_DELETES and change_probs[3] > 0:
+                    mi[3] = True; count += 1;
 
-        #count = math.floor(pow(random.randint(1, 11), 2) / 50) + 1
-        count = npchoice([i for i in range(num_repls + 1)], p=probs) #original (a1)
-        #count = npchoice([0,1,2,3,4],p=[0.1,0.1,0.2,0.3,0.3]) # (a2)
-        #count = npchoice([0,1,2,3,4,5],p=[0.1,0.1,0.2,0.2,0.2,0.2]) # (a3)
-        #count = npchoice([0,1,2,3,4,5],p=[0.1,0.1,0.2,0.2,0.2,0.2]) # (a4)
-        #count = npchoice([0,1,2,3,4,5],p=[0.0,0.0,0.25,0.25,0.25,0.25]) # (a5)
+                multiple_index[i] = mi
+                if count > 0:
+                    which_index_true.append(i)
 
-        for x in range(count):
-            # Note: verb_error redirects to replace_error and vice versa if nothing happened
-            #error_probs = [.30,.25,.25,.20] #original (a1)
-            error_probs  = [.0,1.0,.0,.0]      #(ers)
-            #error_probs = [.25,.30,.30,.15] #(a2)
-            #error_probs = [.40,.25,.25,.10] #(a3)
-            #error_probs = [.30,.30,.30,.10] #(a4)
-            #error_probs = [.35,.25,.25,.15] #(a5)
+            for index in which_index_true:
+                if random.random() > 0.7:
+                    continue
+                word = self.tokenized[index]
+                mask_which_change_true = np.array(multiple_index[index])
+                
+                new_probs = np.array(change_probs)[mask_which_change_true]
+                new_identifiers = np.array(identifiers)[mask_which_change_true]
+                change_id = npchoice(new_identifiers, p=new_probs/sum(new_probs))
+                if change_id == 1:
+                    repl_list = list(changes[change_id][word].keys())
+                else:
+                    repl_list = changes[change_id][word]
+                repl = random.choice(repl_list)
+                self.tokenized[index] = repl
 
-            error_fun = npchoice([self.insert_error, self.verb_error, self.replace_error, self.delete_error], p=error_probs)
-            self.sentence = error_fun()
-            self.tokenize()
+        self.sentence = ' '.join(self.tokenized)
+        self.tokenize()
+
 
         return self.sentence

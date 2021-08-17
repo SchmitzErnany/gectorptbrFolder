@@ -35,5 +35,5 @@ pickle.dump(deletes_to_be_dumped, open("common_deletes_ptbr.p","wb"))
 pickle.dump(replaces_to_be_dumped, open("common_replaces_ptbr.p","wb"))
 
 
-
+print(replaces_to_be_dumped)
 
