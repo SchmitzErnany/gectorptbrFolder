@@ -1,5 +1,5 @@
 """Synthetic data generation by introducing errors."""
-import sys
+import sys, math
 import multiprocessing as mp
 from filelock import FileLock
 from tqdm import tqdm
@@ -38,11 +38,15 @@ def errorify(tpl):
     if pairs.qsize() > FLUSH_SIZE:
         flush_queue(pairs)
 
-def readn(file, n):
+def readn(file, n, cut_num_lines):
     """Read a file n lines at a time."""
     start = True
     clist = []
+    count = 0
     for line in file:
+        count += 1
+        if count > cut_num_lines:
+            break
         if start:
             clist = []
             start = False
@@ -53,7 +57,7 @@ def readn(file, n):
     yield clist
 
 
-def errorify_file(filename: str):
+def errorify_file(filename: str, cut: float = 1):
     """Errorify all sentences in a file."""
 
     # Blank files
@@ -65,12 +69,18 @@ def errorify_file(filename: str):
     manager = mp.Manager()
     pairs = manager.Queue()
 
+    with open(filename, 'r') as f:
+        num_lines = 0
+        for l in f:
+            num_lines += 1
+    cut_num_lines = math.floor(cut*num_lines)
+
     # Errorify each line
     file = open(filename, 'r')
 
     print('The batch size is ' + str(BATCH_SIZE) + ' sentences')
 
-    batches = [(l, pairs) for l in readn(file, BATCH_SIZE)]
+    batches = [(l, pairs) for l in readn(file, BATCH_SIZE, cut_num_lines)]
     # [pool.imap(errorify, batch) for batch in tqdm(batches)]
     [x for x in pool.imap(errorify, tqdm(batches))] # this line was the previous display which would not show the progress bar.
     pool.close()
@@ -79,4 +89,8 @@ def errorify_file(filename: str):
     flush_queue(pairs, True)
 
 if __name__ == '__main__':
-    errorify_file(sys.argv[1])
+    try:
+        cut = float(sys.argv[3])
+    except:
+        cut = 1
+    errorify_file(sys.argv[1], cut)

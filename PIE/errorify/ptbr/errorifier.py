@@ -175,14 +175,16 @@ class Errorifier:
                 elif change_id == 0:
                     repl_list = changes[change_id][word]
                 if not repl_list:
-                    print(f'WARNING: the word {word} does not contain replacements!')
+                    print(f'WARNING: the word "{word}" does not contain replacements!')
                     continue
                 repl = random.choice(repl_list)
-                if index >= 2 and repl in self.original_sentence[index-2:index+2]:
+                window = 3
+                if index >= window and repl in self.original_sentence.split()[index-window:index+window+1]:
+                    # print(self.original_sentence.split()[index-3:index+3+1])
                     continue
+                # if index >= 2 and word == 'e':
+                #     print(self.original_sentence.split()[index-3:index+3+1])
                 self.tokenized[index] = repl
-                # if word == 'da' and repl != 'dá':
-                #     print(change_id, word, repl_list, repl, self.tokenized)
 
         self.sentence = ' '.join(self.tokenized)
         self.tokenize()
