@@ -144,7 +144,7 @@ class Errorifier:
         """Introduce a random error."""
 
         changes = [VERBS, COMMON_REPLACES, COMMON_INSERTS, COMMON_DELETES]; change_probs  = [0.5,0.5,.0,0.]; identifiers = [i for i in range(len(changes))];
-        multiple_index = {}; which_index_true = [];
+        multiple_index = {}; which_index_true = []; count_verb=0; count_replace=0;
         if len(self.tokenized) > 0:
             for i, w in enumerate(self.tokenized):
                 mi = [False]*len(changes); count = 0
@@ -172,10 +172,15 @@ class Errorifier:
                 change_id = npchoice(new_identifiers, p=new_probs/sum(new_probs))
                 if change_id == 1:
                     repl_list = list(changes[change_id][word].keys())
-                else:
+                elif change_id == 0:
                     repl_list = changes[change_id][word]
+                if not repl_list:
+                    print('WARNING: does not contain replacements!')
+                    continue
                 repl = random.choice(repl_list)
                 self.tokenized[index] = repl
+                # if word == 'da' and repl != 'dá':
+                #     print(change_id, word, repl_list, repl, self.tokenized)
 
         self.sentence = ' '.join(self.tokenized)
         self.tokenize()

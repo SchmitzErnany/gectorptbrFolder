@@ -135,6 +135,8 @@ dmypy.json
 *.sh
 
 # data > 100 mb
+preprocessable_files/datest.txt
+preprocessable_files/error79.txt
 preprocessable_files/wiki-sentences.txt
 MODEL_DIR/
 PIE/errorify/ptbr/dual_files/corr_sentences.txt
