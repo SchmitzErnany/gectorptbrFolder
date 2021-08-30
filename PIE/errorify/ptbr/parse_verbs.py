@@ -1,4 +1,4 @@
-import pickle, csv
+import pickle, csv, copy
 import pandas as pd
 import numpy as np
 verbs_file = "common_VerbNoun_ptbr.txt"
@@ -51,6 +51,13 @@ pickle.dump(prepArt_full_listOfArrays, open("pickle/prepArt_relations.p","wb"))
 nounAdj_pickle = pickle.load(open('pickle/nounAdj_relations.p', 'rb'))
 prepArt_pickle = pickle.load(open('pickle/prepArt_relations.p', 'rb'))
 verb_pickle = pickle.load(open('pickle/verb_relations.p', 'rb'))
+# create a list for capitalized words such as 'Existem', in the place of 'Existe'.
+upper_verb_pickle = []
+for verb in copy.deepcopy(verb_pickle):
+    upper_first_column = np.array(list(map(lambda x: x.capitalize(), verb[:,0])))
+    verb[:,0] = upper_first_column
+    upper_verb_pickle.append(verb)
+
 
 
 nounAdjdic = {}
@@ -80,7 +87,7 @@ for i, prepArt in enumerate(prepArt_pickle):
         pass
         
 Vdic = {}
-for i, verb in enumerate(verb_pickle):
+for i, verb in enumerate(verb_pickle + upper_verb_pickle):
     if i%5000 == 0:
         print(i)
     try:
@@ -138,12 +145,18 @@ pickle.dump(Vdic, open("common_Verb_ptbr.p","wb"))
 nounAdj_pickle = pickle.load(open('pickle/nounAdj_relations.p', 'rb'))
 prepArt_pickle = pickle.load(open('pickle/prepArt_relations.p', 'rb'))
 verb_pickle = pickle.load(open('pickle/verb_relations.p', 'rb'))
+# create a list for capitalized words such as 'Existem', in the place of 'Existe'.
+upper_verb_pickle = []
+for verb in copy.deepcopy(verb_pickle):
+    upper_first_column = np.array(list(map(lambda x: x.capitalize(), verb[:,0])))
+    verb[:,0] = upper_first_column
+    upper_verb_pickle.append(verb)
 
 from collections import Counter
 import re
 
 Vdetaildic = {}
-for i, verb in enumerate(verb_pickle):
+for i, verb in enumerate(verb_pickle + upper_verb_pickle):
     if i%5000 == 0:
         print(i)
     try:
