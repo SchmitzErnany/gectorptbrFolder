@@ -8,3 +8,9 @@ mal	mau	1
 mau	mal	1
 as	às	1
 às	as	1
+a	à	1
+à	a	1
+a	as	1
+à	às	1
+as	a	1
+às	à	1
