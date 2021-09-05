@@ -307,10 +307,20 @@ def convert_alignments_into_edits(alignment, shift_idx):
         edits.append(edit)
     # replace/transform target word
     transform = transforms[min_cost_idx]
-    target = transform if transform is not None \
-        else f"$REPLACE_{target_tokens[min_cost_idx]}"
+
+    if transform is not None:
+        target = transform
+    else:
+        if source_token[-1] == ',' and target_tokens[min_cost_idx][-1] != ',':
+            target = f"$REMOVECOMMA"
+        elif source_token[-1] != ',' and target_tokens[min_cost_idx][-1] == ',':
+            target = f"$ADDCOMMA"
+        else:
+            target = f"$REPLACE_{target_tokens[min_cost_idx]}"
+
     edit = [(shift_idx, 1 + shift_idx), target]
     edits.append(edit)
+    #print(edit, source_token)
     # append to this word
     for i in range(min_cost_idx + 1, len(target_tokens)):
         target = target_tokens[i]

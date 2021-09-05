@@ -22,14 +22,15 @@ COMMON_TO_BE_DELETED = pickle.load(open("common_deletes_ptbr.p", "rb"))
 if COMMON_TO_BE_DELETED == {}:
     COMMON_TO_BE_DELETED = []
 
+# print(pickle.load(open("common_inserts_ptbr.p", "rb")))
+# print(pickle.load(open("common_deletes_ptbr.p", "rb")))
+# print(pickle.load(open("common_replaces_ptbr.p", "rb")))
+# print(COMMON_TO_BE_INSERTED)
+# print(COMMON_TO_BE_DELETED)
+# print(COMMON_REPLACES)
 
-print(pickle.load(open("common_inserts_ptbr.p", "rb")))
-print(pickle.load(open("common_deletes_ptbr.p", "rb")))
-print(pickle.load(open("common_replaces_ptbr.p", "rb")))
 
-print(COMMON_TO_BE_INSERTED)
-print(COMMON_TO_BE_DELETED)
-print(COMMON_REPLACES)
+PUNCT = '".,:!?-_}{][)('
 
 
 class Errorifier:
@@ -213,8 +214,13 @@ class Errorifier:
                         word_without_punct = word[:-1]
                         repl_list = [word_without_punct]
                 elif repl_kind == "to_be_deleted":
-                    possible_puncts_to_add_to_word = list(changes[change_id].keys())
-                    repl_list = np.core.defchararray.add(word, possible_puncts_to_add_to_word)
+                    if all(word[-1] != punct for punct in PUNCT):
+                        possible_puncts_to_add_to_word = list(changes[change_id].keys())
+                        repl_list = np.core.defchararray.add(
+                            word, possible_puncts_to_add_to_word
+                        )
+                    else:
+                        repl_list = []
 
                 if not repl_list:
                     print(f'WARNING: the word "{word}" does not contain replacements!')
