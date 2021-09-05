@@ -7,20 +7,26 @@ import numpy as np
 
 VERBS = pickle.load(open('common_Verb_ptbr.p', 'rb'))  # pickle.load(open('common_VerbNoun_ptbr.p', 'rb')) # we comment out the code that called (N|A|S8D|D).+
 
-COMMON_INSERTS = set(pickle.load(open('common_inserts_ptbr.p', 'rb')))
-if COMMON_INSERTS == set():
-	COMMON_INSERTS = []
-
 COMMON_REPLACES = pickle.load(open('common_replaces_ptbr.p', 'rb'))
 if COMMON_REPLACES == {}:
-	COMMON_REPLACES = []
+    COMMON_REPLACES = []
+
+COMMON_INSERTS = pickle.load(open('common_inserts_ptbr.p', 'rb'))
+if COMMON_INSERTS == {}:
+	COMMON_INSERTS = []
 
 COMMON_DELETES = pickle.load(open('common_deletes_ptbr.p','rb'))
 if COMMON_DELETES == {}:
 	COMMON_DELETES = []
 
 
+print(pickle.load(open('common_inserts_ptbr.p', 'rb')))
+print(pickle.load(open('common_deletes_ptbr.p', 'rb')))
+print(pickle.load(open('common_replaces_ptbr.p', 'rb')))
 
+print(COMMON_INSERTS)
+print(COMMON_DELETES)
+print(COMMON_REPLACES)
 
 
 class Errorifier:
@@ -143,7 +149,10 @@ class Errorifier:
     def error(self):
         """Introduce a random error."""
 
-        changes = [VERBS, COMMON_REPLACES, COMMON_INSERTS, COMMON_DELETES]; change_probs  = [0.5,0.5,.0,0.]; identifiers = [i for i in range(len(changes))];
+        changes = [VERBS, COMMON_REPLACES, COMMON_INSERTS, COMMON_DELETES]
+        change_probs  = [0.4,0.4,0.1,0.1]
+        id_to_repl_kind = {0:'verbs', 1:'replaces', 2:'inserts', 3:'deletes'}
+        identifiers = list(id_to_repl_kind.keys())
         multiple_index = {}; which_index_true = []; count_verb=0; count_replace=0;
         if len(self.tokenized) > 0:
             for i, w in enumerate(self.tokenized):
@@ -167,13 +176,18 @@ class Errorifier:
                 word = self.tokenized[index]
                 mask_which_change_true = np.array(multiple_index[index])
                 
-                new_probs = np.array(change_probs)[mask_which_change_true]
-                new_identifiers = np.array(identifiers)[mask_which_change_true]
-                change_id = npchoice(new_identifiers, p=new_probs/sum(new_probs))
-                if change_id == 1:
-                    repl_list = list(changes[change_id][word].keys())
-                elif change_id == 0:
+                probs_with_change = np.array(change_probs)[mask_which_change_true]
+                identifiers_with_change = np.array(identifiers)[mask_which_change_true]
+                change_id = npchoice(identifiers_with_change, p=probs_with_change/sum(probs_with_change))
+                repl_kind = id_to_repl_kind[change_id]
+                if repl_kind == 'verbs':
                     repl_list = changes[change_id][word]
+                elif repl_kind == 'replaces':
+                    repl_list = list(changes[change_id][word].keys())
+                elif repl_kind == 'inserts':
+                    repl_list = list(changes[change_id].keys())
+                elif repl_kind == 'deletes':
+                    repl_list = list(changes[change_id].keys())
                 if not repl_list:
                     print(f'WARNING: the word "{word}" does not contain replacements!')
                     continue
@@ -184,7 +198,12 @@ class Errorifier:
                     continue
                 # if index >= 2 and word == 'e':
                 #     print(self.original_sentence.split()[index-3:index+3+1])
-                self.tokenized[index] = repl
+                if any(repl_kind == kind for kind in ['verbs', 'replaces']):
+                    self.tokenized[index] = repl
+                elif repl_kind == 'inserts':
+                    self.tokenized[index] = word # delete word, see how to do it
+                elif repl_kind == 'deletes':
+                    self.tokenized[index] = word + repl
 
         self.sentence = ' '.join(self.tokenized)
         self.tokenize()
