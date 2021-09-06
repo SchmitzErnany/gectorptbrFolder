@@ -7,12 +7,12 @@ Created on Wed Jul 14 16:53:39 2021
 """
 #%%
 
-!python3 train.py --batch_size 16 --vocab_path data/output_vocabulary \
+!python3 train.py --batch_size 16 \
 --train_set files/neural_files/train_50.txt --dev_set files/neural_files/test_50.txt \
 --model_dir MODEL_DIR --transformer_model bertimbaubase --lowercase_tokens 0 --n_epoch 20
 
 #%%
-
+--vocab_path data/output_vocabulary 
 
 #%%
 
