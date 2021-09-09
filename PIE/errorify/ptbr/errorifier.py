@@ -21,7 +21,7 @@ if COMMON_TO_BE_INSERTED == {}:
 COMMON_TO_BE_DELETED = pickle.load(open("common_deletes_ptbr.p", "rb"))
 if COMMON_TO_BE_DELETED == {}:
     COMMON_TO_BE_DELETED = []
-
+#%%
 # print(pickle.load(open("common_inserts_ptbr.p", "rb")))
 # print(pickle.load(open("common_deletes_ptbr.p", "rb")))
 # print(pickle.load(open("common_replaces_ptbr.p", "rb")))
