@@ -9,7 +9,7 @@ Original file is located at
 
 #%% errorify the wiki-sentences.txt file
 
-!cd PIE/errorify/ptbr && python3 error.py ~/gectorptbrFolder/preprocessable_files/wiki-sentences.txt ~/gectorptbrFolder/files/dual_files 0.01
+!cd PIE/errorify/ptbr && python3 error.py ~/gectorptbrFolder/preprocessable_files/wiki-sentences.txt ~/gectorptbrFolder/files/dual_files
 
 #%% install the pip3 dependencies
 

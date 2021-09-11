@@ -30,7 +30,7 @@ if COMMON_TO_BE_DELETED == {}:
 # print(COMMON_REPLACES)
 
 
-PUNCT = '".,:!?-_}{][)('
+PUNCT = '".,:!?-_'
 
 
 class Errorifier:
@@ -201,16 +201,21 @@ class Errorifier:
                     p=probs_with_change / sum(probs_with_change),
                 )
                 repl_kind = id_to_repl_kind[change_id]
+                repl_list = []
                 if repl_kind == "verbs":
                     repl_list = changes[change_id][word]
                 elif repl_kind == "replaces":
                     repl_list = list(changes[change_id][word].keys())
                 elif repl_kind == "to_be_inserted":
                     punct = word[-1]
+                    if len(word) > 1:
+                        before_punct = word[-2]
+                    else:
+                        before_punct = ''
                     possible_puncts_to_remove_from_word = list(
                         changes[change_id].keys()
                     )
-                    if punct in possible_puncts_to_remove_from_word:
+                    if punct in possible_puncts_to_remove_from_word and before_punct not in ',.':
                         word_without_punct = word[:-1]
                         repl_list = [word_without_punct]
                 elif repl_kind == "to_be_deleted":
@@ -219,11 +224,10 @@ class Errorifier:
                         repl_list = np.core.defchararray.add(
                             word, possible_puncts_to_add_to_word
                         )
-                    else:
-                        repl_list = []
 
                 if not repl_list:
-                    print(f'WARNING: the word "{word}" does not contain replacements!')
+                    if repl_kind != 'to_be_deleted' and repl_kind != 'to_be_inserted':
+                        print(f'WARNING: the word "{word}" does not contain replacements!', repl_kind)
                     continue
                 repl = random.choice(repl_list)
 
