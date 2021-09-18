@@ -1,3 +1,5 @@
+#%%
+from os import POSIX_FADV_DONTNEED
 import pickle, csv, copy
 import pandas as pd
 import numpy as np
@@ -46,7 +48,11 @@ for i, lemma in enumerate(PREPART_lemma_values):
     lemma_array = prepArt_df.loc[lemma].values
     prepArt_full_listOfArrays.append(lemma_array)
 pickle.dump(prepArt_full_listOfArrays, open("pickle/prepArt_relations.p","wb"))
+
+
 #%% opening the dumps and working their relations
+
+
 
 nounAdj_pickle = pickle.load(open('pickle/nounAdj_relations.p', 'rb'))
 prepArt_pickle = pickle.load(open('pickle/prepArt_relations.p', 'rb'))
@@ -279,8 +285,29 @@ for i, (word, tag, lemma) in enumerate(Vdetaildic.keys()):
             continue
         words_tags_str = word + '_' + word_tag_lemma[0] + ':' + first_tag + '_' + second_tag
         verb_form_vocab_list.append(words_tags_str)
-        
-verb_form_vocab_df = pd.DataFrame(verb_form_vocab_list)
+
+#%% sorting by frequency on the second word, i.e. the word2 in "word1_word2:tag1_tag2"
+from create_freq_dataframe import freq_df
+
+separate_word_list = []
+for vfv in verb_form_vocab_list:
+    words = vfv.split(":")[0]
+    tags = vfv.split(":")[1]
+    word1 = words.split("_")[0]
+    word2 = words.split("_")[1]
+    separate_word_list.append([word1,word2,tags])
+
+separate_word_df = pd.DataFrame(separate_word_list, columns=['word1', 'word2', 'POStags'])
+freq_df = freq_df.reset_index()
+
+merged = separate_word_df.merge(freq_df, left_on='word2', right_on='word', how='left')
+merged['index'] = merged['index'].fillna(value=max(merged['index'])+1)
+merged = merged.sort_values(by='index').drop(['index','word'], axis=1)
+merged['vfv'] = merged['word1'] + '_' + merged['word2'] + ':' + merged['POStags']
+
+#%%
+#verb_form_vocab_df = pd.DataFrame(verb_form_vocab_list)
+verb_form_vocab_df = merged['vfv']
 verb_form_vocab_df.to_csv('verb-form-vocab.txt', index=False, header=False, sep='\t', quoting=csv.QUOTE_NONE)
 
 #%% check redundancies
@@ -307,6 +334,10 @@ for f in labelsdic:
 
 
 
+#%%
+
+
+freq_df
 
 
 
@@ -336,3 +367,4 @@ for f in labelsdic:
 
 
 
+# %%
