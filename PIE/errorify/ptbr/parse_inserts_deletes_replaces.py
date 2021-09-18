@@ -1,3 +1,4 @@
+#%%
 import pickle
 
 def simpleFileToDict(filename):
@@ -5,6 +6,8 @@ def simpleFileToDict(filename):
     with open(filename) as file:
         for line in file:
             key, value = line.split()
+            if key[0] == "#":
+                continue
             to_be_dumped[key] = int(value)
     return to_be_dumped
 
@@ -13,10 +16,14 @@ def complexFileToDict(filename):
     with open(filename) as file:
         for line in file:
             key, _ , _ = line.split()
+            if key[0] == "#":
+                continue
             to_be_dumped[key] = {}
         file.seek(0) # return the cursor to the first line of the file
         for line in file:
             key, value, number = line.split()
+            if key[0] == "#":
+                continue
             to_be_dumped[key][value] = int(number)
     return to_be_dumped
 
@@ -39,3 +46,5 @@ print('replaces:', replaces_to_be_dumped)
 print('inserts:', inserts_to_be_dumped)
 print('deletes:', deletes_to_be_dumped)
 
+
+# %%
