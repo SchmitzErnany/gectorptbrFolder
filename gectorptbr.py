@@ -96,9 +96,9 @@ Here we have to input:
 """
 eval_path = '/home/ernany/gectorptbrFolder/eval_after_train.txt'
 with open(eval_path, 'w') as f:
-    f.writelines('Eles, fazem isso.')
+    f.writelines('Eles faz .')
 
-!python3 predict.py --additional_confidence 0. --min_error_probability 0. --model_path MODEL_DIR/best.th --vocab_path MODEL_DIR/vocabulary/ --input_file eval_after_train.txt --output_file OUTPUT_FILE.txt --transformer_model bertimbaubase
+!python3 predict.py --additional_confidence 0.7 --min_error_probability 0.3 --model_path MODEL_DIR/best.th --vocab_path MODEL_DIR/vocabulary/ --input_file eval_after_train.txt --output_file OUTPUT_FILE.txt --transformer_model bertimbaubase
 
 #0.6 is a good additional_confidence
 
@@ -109,7 +109,7 @@ with open(eval_path, 'r') as f:
     for line in f:
         print(line)
 print('\nOUTPUT')
-output_path = '/home/ernanyschmitz/gectorptbrFolder/OUTPUT_FILE.txt'
+output_path = '/home/ernany/gectorptbrFolder/OUTPUT_FILE.txt'
 with open(output_path, 'r') as f:
     for line in f:
         print(line)
@@ -121,3 +121,5 @@ with open(output_path, 'r') as f:
 
 
 
+
+# %%

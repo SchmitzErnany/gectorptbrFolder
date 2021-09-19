@@ -166,7 +166,7 @@ class GecBERTModel(object):
             prob < self.min_error_probability or error_prob < self.min_error_probability
         ) or sugg_token in [UNK, PAD, "$KEEP"]:
             return None
-        
+
         if (
             sugg_token.startswith("$REPLACE_")
             or sugg_token.startswith("$TRANSFORM_")
@@ -186,9 +186,9 @@ class GecBERTModel(object):
             sugg_token_clear = sugg_token[:]
         elif sugg_token == "$ADDCOMMA":
             sugg_token_clear = token[:] + ","
-        elif sugg_token == "$REMOVECOMMA" and token[-1] == ',':
+        elif sugg_token == "$REMOVECOMMA" and token[-1] == ",":
             sugg_token_clear = token[:-1]
-        elif sugg_token == "$REMOVECOMMA" and token[-1] != ',':
+        elif sugg_token == "$REMOVECOMMA" and token[-1] != ",":
             return None
         else:
             sugg_token_clear = sugg_token[sugg_token.index("_") + 1 :]
@@ -277,7 +277,10 @@ class GecBERTModel(object):
             if orig != pred and pred not in prev_preds:
                 final_batch[orig_id] = pred
                 final_labels[orig_id] = [
-                    (pred_label[j] + orig_label[j]) for j in range(len(pred_label))
+                    (pred_label[j] + "__9__" + orig_label[j])
+                    if (pred_label[j] != "" and orig_label[j] != "")
+                    else (pred_label[j] + "" + orig_label[j])
+                    for j in range(len(pred_label))
                 ]
                 new_pred_ids.append(orig_id)
                 prev_preds_dict[orig_id].append(pred)
@@ -302,7 +305,7 @@ class GecBERTModel(object):
             length = min(len(tokens), max_len)
             edits = []
 
-            # skip whole sentences if there no errors
+            # skip whole sentences if there are no errors
             if max(idxs) == 0:
                 all_results.append(tokens)
                 all_transforms.append([""] * len(idxs))
@@ -327,6 +330,7 @@ class GecBERTModel(object):
                 sugg_token = self.vocab.get_token_from_index(
                     idxs[i], namespace="labels"
                 )
+
                 action = self.get_token_action(
                     token, i, error_prob[i], probabilities[i], sugg_token
                 )
